@@ -1,5 +1,5 @@
 package FinalProject;
 
 public enum PointType {
-	PATH, WALL, CAVERN
+	PATH, WALL, CAVERN, NONE
 }

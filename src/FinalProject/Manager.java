@@ -10,13 +10,13 @@ public class Manager {
 	public static final int NUM_ROBOTS = 4;
 	private static final int MINE_SIZE = 20;
 	private String inputFile;
-	private Queue<Robot> queue;
+	private LinkedList<Robot> queue;
 	
 	public Manager(String inputFile) {
 		this.inputFile = inputFile;
+		mine = new Point[MINE_SIZE][MINE_SIZE];
 		readInputFile();
 		queue = new LinkedList<Robot>();
-		mine = new Point[MINE_SIZE][MINE_SIZE];
 		currentRobot = 0;
 	}
 	
@@ -25,7 +25,27 @@ public class Manager {
 	}
 	
 	private void readInputFile() {
-		
+		//FOR tests
+		for (int i = 0; i < MINE_SIZE; i++) {
+			for (int j = 0; j < MINE_SIZE; j++) {
+				mine[i][j] = new Point();
+			}
+		}
+	}
+	
+	//FOR DEV ONLY
+	public int getCurrentRobot() {
+		return currentRobot;
+	}
+	
+	//FOR DEV ONLY
+	public Point getPointAt(int row, int col) {
+		return mine[row][col];
+	}
+	
+	//FOR DEV ONLY
+	public LinkedList<Robot> getQueue() {
+		return queue;
 	}
 	
 	/*public static void main(String[] args) {
