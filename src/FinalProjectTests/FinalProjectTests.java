@@ -1,16 +1,16 @@
 package FinalProjectTests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Stack;
 
-import FinalProject.*;
-
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import FinalProject.CavernPoint;
+import FinalProject.Manager;
+import FinalProject.PointType;
+import FinalProject.Robot;
 
 public class FinalProjectTests {
 	private static Manager manager;
@@ -81,5 +81,21 @@ public class FinalProjectTests {
 		
 		LinkedList<Robot> queue = manager.getQueue();
 		//TODO finish this test
+	}
+	
+	@Test
+	public void testAlreadyKnowsPath() {
+		// send all robots to cavern 1
+		manager.sendRobot(1);
+		manager.sendRobot(1);
+		manager.sendRobot(1);
+		manager.sendRobot(1);
+		// send first robot once again
+		manager.sendRobot(1);
+		
+		LinkedList<Robot> q = manager.getQueue();
+		// make sure that the robot that just returned, and is now at the end of the queue, did not re-calculate the route to cavern 1 and thus did not store any additional routes.
+		assertEquals(1, q.get(q.size() - 1).getRoutes().size());
+		
 	}
 }

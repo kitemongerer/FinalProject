@@ -8,6 +8,12 @@ public class Manager {
 	private Point[][] mine;
 	private int currentRobot;
 	public static final int NUM_ROBOTS = 4;
+	public static final String[] names = {
+		"Zlad",
+		"Keytarist Girl",
+		"Space Invader",
+		"Darth Vapour"
+	};
 	private static final int MINE_SIZE = 20;
 	private String inputFile;
 	private LinkedList<Robot> queue;
@@ -18,10 +24,12 @@ public class Manager {
 		readInputFile();
 		queue = new LinkedList<Robot>();
 		currentRobot = 0;
+		for (int i = 0; i < NUM_ROBOTS; i++)
+			queue.add(new Robot(names[i]));
 	}
 	
 	public void sendRobot(int cavernNumber) {
-		
+
 	}
 	
 	private void readInputFile() {

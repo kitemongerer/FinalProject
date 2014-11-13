@@ -1,7 +1,7 @@
 package FinalProject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.Stack;
 
 public class Robot {
@@ -16,7 +16,13 @@ public class Robot {
 	}
 	
 	public void findCavern(int cavernNumber) {
-		
+		Set keyset = routes.keySet();
+		for (Object k : keyset) {
+			if ((Integer) k == cavernNumber)
+				return;
+			else
+				traverse((Integer) k);
+		}
 	}
 	
 	private int traverse(int cavernNumber) {
