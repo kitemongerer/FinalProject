@@ -13,6 +13,11 @@ public class Robot {
 		this.name = name;
 		currentPath = new Stack<Point>();
 		routes = new HashMap<Integer, Stack<Point>>();
+		
+		//For tests
+		for (int i = 0; i < 4; i++) {
+			routes.put(i + 1, new Stack<Point>());
+		}
 	}
 	
 	public void findCavern(int cavernNumber) {
