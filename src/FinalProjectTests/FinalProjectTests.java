@@ -3,12 +3,14 @@ package FinalProjectTests;
 import static org.junit.Assert.assertEquals;
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import FinalProject.CavernPoint;
 import FinalProject.Manager;
+import FinalProject.Point;
 import FinalProject.PointType;
 import FinalProject.Robot;
 
@@ -85,17 +87,23 @@ public class FinalProjectTests {
 	
 	@Test
 	public void testAlreadyKnowsPath() {
-		// send all robots to cavern 1
+		// send all 4 robots to cavern 1
 		manager.sendRobot(1);
 		manager.sendRobot(1);
 		manager.sendRobot(1);
 		manager.sendRobot(1);
+		
+		// store the first robot's path to cavern 1
+		Stack<Point> expected = manager.getQueue().get(0).getRoutes().get(0);
+		
 		// send first robot once again
 		manager.sendRobot(1);
 		
 		LinkedList<Robot> q = manager.getQueue();
-		// make sure that the robot that just returned, and is now at the end of the queue, did not re-calculate the route to cavern 1 and thus did not store any additional routes.
-		assertEquals(1, q.get(q.size() - 1).getRoutes().size());
+		
+		Stack<Point> actual = q.get(q.size() - 1).getRoutes().get(0);
+
+		assertEquals(expected, actual);
 		
 	}
 }
