@@ -8,6 +8,10 @@ public class Robot {
 	private HashMap<Integer, Stack<Point>> routes;
 	private Stack<Point> currentPath;
 	private String name;
+	
+	//FOR DEV ONLY
+	int numVisited = 0;
+	
 	// current location
 	private int col = 0;
 	private int row = 0;
@@ -28,6 +32,7 @@ public class Robot {
 		for (Object k : keyset) {
 			if ((Integer) k == cavernNumber)
 				for (Point p : routes.get(k)) {
+					numVisited++;
 					this.col = p.x;
 					this.row = p.y;
 				}

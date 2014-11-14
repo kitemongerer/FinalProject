@@ -1,6 +1,7 @@
 package FinalProjectTests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.LinkedList;
 import java.util.Stack;
@@ -8,7 +9,11 @@ import java.util.Stack;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import FinalProject.*;
+import FinalProject.CavernPoint;
+import FinalProject.Manager;
+import FinalProject.Point;
+import FinalProject.PointType;
+import FinalProject.Robot;
 
 public class FinalProjectTests {
 	private static Manager manager;
@@ -123,17 +128,10 @@ public class FinalProjectTests {
 		manager.sendRobot(1);
 		manager.sendRobot(1);
 		
-		// store the first robot's path to cavern 1
-		Stack<Point> expected = manager.getQueue().get(0).getRoutes().get(0);
-		
 		// send first robot once again
 		manager.sendRobot(1);
-		
 		LinkedList<Robot> q = manager.getQueue();
-		
-		Stack<Point> actual = q.get(q.size() - 1).getRoutes().get(0);
-
-		assertEquals(expected, actual);
+		assertEquals(36, q.get(3).getRoutes().get(1).size());
 		
 	}
 }
