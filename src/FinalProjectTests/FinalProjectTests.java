@@ -1,6 +1,6 @@
 package FinalProjectTests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.LinkedList;
 import java.util.Stack;
@@ -8,11 +8,7 @@ import java.util.Stack;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import FinalProject.CavernPoint;
-import FinalProject.Manager;
-import FinalProject.Point;
-import FinalProject.PointType;
-import FinalProject.Robot;
+import FinalProject.*;
 
 public class FinalProjectTests {
 	private static Manager manager;
@@ -82,7 +78,41 @@ public class FinalProjectTests {
 		manager.sendRobot(4);
 		
 		LinkedList<Robot> queue = manager.getQueue();
-		//TODO finish this test
+		Robot robot = queue.get(0);
+		Stack<Point> path = robot.getRoutes().get(1);
+		
+		//Check that the size of the path is correct
+		assertEquals(36, path.size());
+		//Check that the last element of the path (top of stack) is the correct cavern space
+		assertEquals(manager.getPointAt(2, 1), path.peek());
+			
+		//Since the queue went all the way around and we aren't changing the order
+		//The next robot is in spot 1
+		robot = queue.get(1);
+		path = robot.getRoutes().get(2);
+		assertEquals(21, path.size());
+		assertEquals(manager.getPointAt(14, 4), path.peek());	
+		
+		robot = queue.get(2);
+		path = robot.getRoutes().get(3); //18 or 19
+		
+		//There are two paths to cavern 3
+		assertTrue(path.size() == 18 || path.size() == 19);
+		
+		if (path.size() == 18) {
+			assertEquals(manager.getPointAt(9, 12), path.peek());
+		} else if (path.size() == 19) {
+			assertEquals(manager.getPointAt(8, 12), path.peek());
+		}
+		
+		robot = queue.get(3);
+		path = robot.getRoutes().get(4);
+		
+		//There are also two paths to cavern 4
+		assertTrue(path.size() == 49 || path.size() == 51);
+		
+		//Both paths lead to the same spot though so only one check here
+		assertEquals(manager.getPointAt(3, 15), path.peek());	
 	}
 	
 	@Test
