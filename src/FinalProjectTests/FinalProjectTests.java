@@ -28,7 +28,7 @@ public class FinalProjectTests {
 	public void testFileReading() {
 		// Test that paths are read correctly
 		assertEquals(PointType.PATH, manager.getPointAt(4, 5).type);
-		assertEquals(PointType.PATH, manager.getPointAt(17, 6).type);
+		assertEquals(PointType.PATH, manager.getPointAt(16, 6).type);
 		assertEquals(PointType.PATH, manager.getPointAt(16, 14).type);
 		
 		//Test if entrance is read correctly
@@ -46,8 +46,8 @@ public class FinalProjectTests {
 		assertEquals(PointType.WALL, manager.getPointAt(6, 2).type);
 		
 		//Test that caverns are read correctly
-		assertEquals(PointType.CAVERN, manager.getPointAt(2, 3).type);
-		assertEquals(1, ((CavernPoint)manager.getPointAt(2, 3)).getCavernNumber());
+		assertEquals(PointType.CAVERN, manager.getPointAt(2, 1).type);
+		assertEquals(1, ((CavernPoint)manager.getPointAt(2, 1)).getCavernNumber());
 		assertEquals(PointType.CAVERN, manager.getPointAt(14, 4).type);
 		assertEquals(2, ((CavernPoint)manager.getPointAt(14, 4)).getCavernNumber());
 		assertEquals(PointType.CAVERN, manager.getPointAt(8, 12).type);

@@ -1,7 +1,11 @@
 package FinalProject;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 
 public class Manager {
 
@@ -14,14 +18,18 @@ public class Manager {
 		"Space Invader",
 		"Darth Vapour"
 	};
-	private static final int MINE_SIZE = 20;
+	private int numRows;
+	private int numCols;
 	private String inputFile;
 	private LinkedList<Robot> queue;
 	
 	public Manager(String inputFile) {
 		this.inputFile = inputFile;
-		mine = new Point[MINE_SIZE][MINE_SIZE];
-		readInputFile();
+		try {
+			readInputFile();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		queue = new LinkedList<Robot>();
 		currentRobot = 0;
 		for (int i = 0; i < NUM_ROBOTS; i++)
@@ -32,15 +40,60 @@ public class Manager {
 
 	}
 	
-	private void readInputFile() {
-		//FOR tests
-		for (int i = 0; i < MINE_SIZE; i++) {
-			for (int j = 0; j < MINE_SIZE; j++) {
-				mine[i][j] = new Point();
+	private void readInputFile() throws BadConfigFormatException, FileNotFoundException {
+		ArrayList<ArrayList<String>> tempMine = new ArrayList<ArrayList<String>>();
+		Scanner mineRead = new Scanner(new FileReader(inputFile));
+
+		numRows = 0;
+		while (mineRead.hasNextLine()) {
+
+			tempMine.add(new ArrayList<String>());
+			String readLine = mineRead.nextLine();
+			String[] letters = readLine.split(",");
+
+			for (int i = 0; i < letters.length; i++) {
+				tempMine.get(numRows).add(letters[i]);
+			}
+
+			if (numCols != 0 && numCols != letters.length) {
+				mineRead.close();
+				throw new BadConfigFormatException("Row lengths are inconsistant in layout config file.");
+			} else {
+				numCols = letters.length;
+			}
+			numRows++;
+		}
+		mineRead.close();
+
+		mine = new Point[numRows][numCols];
+
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numCols; j++) {
+				if (i > tempMine.size())
+					throw new BadConfigFormatException("Temp board row count doesn't match config file");
+
+				if (j > tempMine.get(0).size())
+					throw new BadConfigFormatException("Temp board column count doesn't match config file");
+
+				switch (tempMine.get(i).get(j)) {
+				case "W":
+					mine[i][j] = new Point(i, j, PointType.WALL);
+					break;
+				case "P":
+					mine[i][j] = new Point(i, j, PointType.PATH);
+					break;
+				case "E":
+					mine[i][j] = new Point(i, j, PointType.PATH);
+					getPointAt(i, j).isEntrance = true;
+					break;
+				default:
+					mine[i][j] = new CavernPoint(i, j, PointType.CAVERN ,tempMine.get(i).get(j));
+					break;
+				}
 			}
 		}
 	}
-	
+
 	//FOR DEV ONLY
 	public int getCurrentRobot() {
 		return currentRobot;

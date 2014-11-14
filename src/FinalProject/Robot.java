@@ -33,8 +33,8 @@ public class Robot {
 			if ((Integer) k == cavernNumber)
 				for (Point p : routes.get(k)) {
 					numVisited++;
-					this.col = p.x;
-					this.row = p.y;
+					this.col = p.col;
+					this.row = p.row;
 				}
 			else
 				traverse((Integer) k);
