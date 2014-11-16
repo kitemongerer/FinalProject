@@ -136,7 +136,8 @@ public class FinalProjectTests {
 		manager.sendRobot(1);
 		manager.sendRobot(1);
 		
-		// send first robot once again
+		
+		// send first robot once again to cavern 1
 		manager.sendRobot(1);
 		LinkedList<Robot> q = manager.getQueue();
 		assertEquals(36, q.get(3).getRoutes().get(1).size());

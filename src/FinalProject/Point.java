@@ -11,4 +11,5 @@ public class Point {
 		this.col = col;
 		this.type = type;
 	}
+	
 }

@@ -3,9 +3,11 @@ package FinalProject;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Manager {
 
@@ -30,17 +32,19 @@ public class Manager {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		queue = new LinkedList<Robot>();
+		setManager();
 	}
 	
+	//Everytime we run the test, we need this class to initialize the data.
 	public void setManager(){
+		queue = new LinkedList<Robot>();
 		currentRobot = 0;
 		for (int i = 0; i < NUM_ROBOTS; i++)
-			queue.add(new Robot(names[i]));
+			queue.add(new Robot(names[i], mine, numRows, numCols));
 	}
 	
-	public void sendRobot(int cavernNumber) {
-		
+	public void sendRobot(int cavernNumber) {;
+		queue.get(currentRobot).findCavern(cavernNumber);
 		//Set the next robot is the current robot
 	    currentRobot = (currentRobot + 1) % NUM_ROBOTS;
 	}
