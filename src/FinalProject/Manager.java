@@ -31,13 +31,18 @@ public class Manager {
 			System.out.println(e.getMessage());
 		}
 		queue = new LinkedList<Robot>();
+	}
+	
+	public void setManager(){
 		currentRobot = 0;
 		for (int i = 0; i < NUM_ROBOTS; i++)
 			queue.add(new Robot(names[i]));
 	}
 	
 	public void sendRobot(int cavernNumber) {
-
+		
+		//Set the next robot is the current robot
+	    currentRobot = (currentRobot + 1) % NUM_ROBOTS;
 	}
 	
 	private void readInputFile() throws BadConfigFormatException, FileNotFoundException {
@@ -95,7 +100,7 @@ public class Manager {
 	}
 
 	//FOR DEV ONLY
-	public int getCurrentRobot() {
+	public int getCurrentRobot() {	
 		return currentRobot;
 	}
 	

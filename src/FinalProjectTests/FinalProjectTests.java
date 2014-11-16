@@ -26,6 +26,8 @@ public class FinalProjectTests {
 	
 	@Test
 	public void testFileReading() {
+		manager.setManager();
+		
 		// Test that paths are read correctly
 		assertEquals(PointType.PATH, manager.getPointAt(4, 5).type);
 		assertEquals(PointType.PATH, manager.getPointAt(16, 6).type);
@@ -58,25 +60,29 @@ public class FinalProjectTests {
 	
 	@Test
 	public void testNextRobot() {
+		manager.setManager();
+
 		// Check the robot number is right then send that robot and check that the next robot is now current
 		assertEquals(0, manager.getCurrentRobot());
 		manager.sendRobot(1);
 		
 		assertEquals(1, manager.getCurrentRobot());
 		manager.sendRobot(1);
-		
+
 		assertEquals(2, manager.getCurrentRobot());
 		manager.sendRobot(1);
-		
+
 		assertEquals(3, manager.getCurrentRobot());
 		manager.sendRobot(1);
-		
+
 		assertEquals(0, manager.getCurrentRobot());
 		manager.sendRobot(1);
 	}
 
 	@Test
 	public void testFindingCaverns() {
+		manager.setManager();
+
 		manager.sendRobot(1);
 		manager.sendRobot(2);
 		manager.sendRobot(3);
@@ -122,6 +128,8 @@ public class FinalProjectTests {
 	
 	@Test
 	public void testAlreadyKnowsPath() {
+		manager.setManager();
+
 		// send all 4 robots to cavern 1
 		manager.sendRobot(1);
 		manager.sendRobot(1);
