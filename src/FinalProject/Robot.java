@@ -71,6 +71,8 @@ public class Robot {
 		}
 	}
 	
+	
+	//the recursive function
 	private void traverse(int cavernNumber, int row, int col) {
 		//if the cavern is found found, then do the recursive part
 		if (!found){
@@ -113,7 +115,6 @@ public class Robot {
 	}
 	
 	public Stack<Point> getRoute(int cavernNumber) {
-		
 		return routes.get(cavernNumber);
 	}
 	
