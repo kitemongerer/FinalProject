@@ -1,5 +1,6 @@
 package FinalProject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Stack;
@@ -7,7 +8,7 @@ import java.util.Stack;
 public class Robot {
 	
 	//For all robots, they cannot share their data of routes for the others. 
-	private HashMap<Integer, Stack<Point>> routes;
+	private HashMap<Integer, ArrayList<Point>> routes;
 	private Stack<Point> currentPath;
 	private String name;
 	private Point[][] mine;
@@ -29,7 +30,7 @@ public class Robot {
 	
 	public Robot(String name, Point[][] mine, int numRows, int numCols) {
 		this.name = name;
-		routes = new HashMap<Integer, Stack<Point>>();
+		routes = new HashMap<Integer, ArrayList<Point>>();
 		this.mine = mine;
 		this.numRows = numRows;
 		this.numCols = numCols; 
@@ -88,11 +89,15 @@ public class Robot {
 									if (mine[row + r][col + c].type.equals(PointType.PATH)){
 										traverse(cavernNumber, row + r, col + c);
 									} else if (mine[row + r][col + c].type.equals(PointType.CAVERN)){
-										if (!carvenVisited[((CavernPoint) mine[row + r][col + c]).getCavernNumber()]){
-											carvenVisited[((CavernPoint) mine[row + r][col + c]).getCavernNumber()] = true;
+										if (!carvenVisited[((CavernPoint) mine[row + r][col + c]).getCavernNumber() - 1]){
+											carvenVisited[((CavernPoint) mine[row + r][col + c]).getCavernNumber() - 1] = true;
 											currentPath.add(mine[row + r][col + c]);
-											routes.put(((CavernPoint) mine[row + r][col + c]).getCavernNumber(), currentPath);
-											System.out.println(routes.get((((CavernPoint) mine[row + r][col + c]).getCavernNumber())).size());
+											ArrayList<Point> temp = new ArrayList<Point>();
+											for(Point p : currentPath) {
+												temp.add(p);
+											}
+											routes.put(((CavernPoint) mine[row + r][col + c]).getCavernNumber(), temp);
+											//System.out.println(routes.get((((CavernPoint) mine[row + r][col + c]).getCavernNumber())).size());
 											if (((CavernPoint) mine[row + r][col + c]).getCavernNumber() == cavernNumber) 
 												found = true;
 											currentPath.pop();
@@ -112,13 +117,13 @@ public class Robot {
 		} 
 	}
 	
-	public Stack<Point> getRoute(int cavernNumber) {
+	public ArrayList<Point> getRoute(int cavernNumber) {
 		
 		return routes.get(cavernNumber);
 	}
 	
 	//FOR DEV ONLY
-	public HashMap<Integer, Stack<Point>> getRoutes() {
+	public HashMap<Integer, ArrayList<Point>> getRoutes() {
 		return routes;
 	}
 	
