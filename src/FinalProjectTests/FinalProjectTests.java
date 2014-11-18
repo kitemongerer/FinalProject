@@ -89,7 +89,7 @@ public class FinalProjectTests {
 		manager.sendRobot(3);
 		manager.sendRobot(4);
 		
-		LinkedList<Robot> queue = manager.getQueue();
+		ArrayList<Robot> queue = manager.getQueue();
 		Robot robot = queue.get(0);
 		ArrayList<Point> path = robot.getRoutes().get(1);
 		
@@ -137,11 +137,9 @@ public class FinalProjectTests {
 		manager.sendRobot(1);
 		manager.sendRobot(1);
 		
-		
 		// send first robot once again to cavern 1
 		manager.sendRobot(1);
-		LinkedList<Robot> q = manager.getQueue();
+		ArrayList<Robot> q = manager.getQueue();
 		assertEquals(36, q.get(3).getRoutes().get(1).size());
-		
 	}
 }

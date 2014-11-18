@@ -1,5 +1,9 @@
 package FinalProject;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -14,19 +18,26 @@ public class Robot {
 	private Point[][] mine;
 	private boolean[][] ifVisited;
 	private boolean[] cavernVisited;
+	private boolean inQueue;
 	//FOR DEV ONLY
 	int numVisited = 0;
 	int numberOfCaverns = 4;
 	
 	private boolean found;
 	
-	//numOf Col and row for mine;
+	// numOf Col and row for mine;
 	private int numCols;
 	private int numRows;
 	
 	// current location
 	private int curCol = 0;
 	private int curRow = 0;
+	
+	// Entrance location
+	private int entranceCol;
+	private int entranceRow;
+	
+	private int queuePosition;
 	
 	public Robot(String name, Point[][] mine, int numRows, int numCols) {
 		this.name = name;
@@ -37,39 +48,49 @@ public class Robot {
 		
 		ifVisited = new boolean[numRows][numCols];
 		cavernVisited = new boolean[numberOfCaverns];
-		//For tests
-//		for (int i = 0; i < 4; i++) {
-//			routes.put(i + 1, new Stack<Point>());
-//      }
-	}
-	
-	public void findCavern(int cavernNumber) {
-		Set keyset = routes.keySet();
-		boolean alreadyFound = false;
-		for (Object k : keyset) {
-			if ((Integer) k == cavernNumber)
-				alreadyFound = true;
-		 }
-		if (!alreadyFound){ 
-			
-			//Find the entrance
-			for (int row = 0; row < numRows; row++) {
-				for (int col = 0; col < numCols; col++) {
-					
-					//Start traverse at entrance
-					if (mine[row][col].isEntrance){
-						//found is for if this cavern is found or not in the recursive function
-						found = false;
-						currentPath = new Stack<Point>();
-						traverse(cavernNumber, row, col);
-						break;
-					}
+		
+		for (int row = 0; row < numRows; row++) {
+			for (int col = 0; col < numCols; col++) {
+				if (mine[row][col].isEntrance){
+					entranceCol = col;
+					entranceRow = row;
+					break;
 				}
 			}
 		}
 	}
 	
+	public void findCavern(int cavernNumber) {
+		boolean inQueue = false;
+		boolean alreadyFound = false;
+		for (Object k : routes.keySet()) {
+			if ((Integer) k == cavernNumber) { 
+				alreadyFound = true;
+				navigateKnownPath(routes.get(k));
+			}
+		}
+
+		if (!alreadyFound) {					
+			//found is for if this cavern is found or not in the recursive function
+			found = false;
+			currentPath = new Stack<Point>();
+			
+			//Start traverse at entrance
+			traverse(cavernNumber, entranceRow, entranceCol);
+		}
+		inQueue = true;
+	}
 	
+	private void navigateKnownPath(ArrayList<Point> route) {
+		for(Point point : route) {
+			curRow = point.row;
+			curCol = point.col;
+			//TODO redraw robot
+			//TODO add pause so user can see changes
+		}
+		
+	}
+
 	//the recursive function
 	private void traverse(int cavernNumber, int row, int col) {
 		//if the cavern is not found, then do the recursive part
@@ -80,6 +101,8 @@ public class Robot {
 			//Set robot location for the GUI
 			curRow = row;
 			curCol = col;
+			//TODO add GUI functionality to update GUI each time the robot moves
+			//TODO add pause so user can see robot's movement
 			
 			currentPath.add(mine[row][col]);
 
@@ -134,6 +157,25 @@ public class Robot {
 		} 
 	}
 	
+	public void draw(Graphics g) {
+		if (inQueue) {
+			drawInQueue(g);
+		} else {
+			g.setColor(Color.ORANGE);
+			Graphics2D g2d = (Graphics2D) g;
+			// Assume x, y, and diameter are instance variables.
+			Ellipse2D.Double circle = new Ellipse2D.Double(Manager.POINT_SIZE * curCol, Manager.POINT_SIZE * curRow, Manager.POINT_SIZE, Manager.POINT_SIZE);
+			g2d.fill(circle);
+			g.setColor(Color.BLACK);
+			g.drawOval(Manager.POINT_SIZE * curCol, Manager.POINT_SIZE * curRow, Manager.POINT_SIZE, Manager.POINT_SIZE);
+		}
+	}
+	
+	private void drawInQueue(Graphics g) {
+		// TODO write this
+		
+	}
+
 	public ArrayList<Point> getRoute(int cavernNumber) {
 		return routes.get(cavernNumber);
 	}
@@ -150,5 +192,16 @@ public class Robot {
 	
 	public int getRow() {
 	   return curRow;
+	}
+
+	public void setQueuePosition(int queuePosition) {
+		this.queuePosition = queuePosition;
+	}
+	
+	public void moveUp() {
+		this.queuePosition -= 1;
+		if (queuePosition < 0) {
+			queuePosition = Manager.NUM_ROBOTS - 1;
+		}
 	}
 }

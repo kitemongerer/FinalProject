@@ -14,6 +14,7 @@ public class Manager {
 	private Point[][] mine;
 	private int currentRobot;
 	public static final int NUM_ROBOTS = 4;
+	public static final int POINT_SIZE = 26;
 	public static final String[] names = {
 		"Zlad",
 		"Keytarist Girl",
@@ -23,7 +24,7 @@ public class Manager {
 	private int numRows;
 	private int numCols;
 	private String inputFile;
-	private LinkedList<Robot> queue;
+	private ArrayList<Robot> queue;
 	
 	public Manager(String inputFile) {
 		this.inputFile = inputFile;
@@ -37,16 +38,22 @@ public class Manager {
 	
 	//Everytime we run the test, we need this class to initialize the data.
 	public void setManager(){
-		queue = new LinkedList<Robot>();
+		queue = new ArrayList<Robot>();
 		currentRobot = 0;
-		for (int i = 0; i < NUM_ROBOTS; i++)
+		for (int i = 0; i < NUM_ROBOTS; i++) {
 			queue.add(new Robot(names[i], mine, numRows, numCols));
+			queue.get(i).setQueuePosition(i);
+		}
 	}
 	
-	public void sendRobot(int cavernNumber) {;
+	public void sendRobot(int cavernNumber) {
 		queue.get(currentRobot).findCavern(cavernNumber);
+		
 		//Set the next robot is the current robot
 	    currentRobot = (currentRobot + 1) % NUM_ROBOTS;
+	    for (Robot robot : queue) {
+	    	robot.moveUp();
+	    }
 	}
 	
 	private void readInputFile() throws BadConfigFormatException, FileNotFoundException {
@@ -114,7 +121,7 @@ public class Manager {
 	}
 	
 	//FOR DEV ONLY
-	public LinkedList<Robot> getQueue() {
+	public ArrayList<Robot> getQueue() {
 		return queue;
 	}
 	
