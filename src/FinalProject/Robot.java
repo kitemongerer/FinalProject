@@ -13,7 +13,7 @@ public class Robot {
 	private String name;
 	private Point[][] mine;
 	private boolean[][] ifVisited;
-	private boolean[] carvenVisited;
+	private boolean[] cavernVisited;
 	//FOR DEV ONLY
 	int numVisited = 0;
 	int numberOfCaverns = 4;
@@ -36,7 +36,7 @@ public class Robot {
 		this.numCols = numCols; 
 		
 		ifVisited = new boolean[numRows][numCols];
-		carvenVisited = new boolean[numberOfCaverns];
+		cavernVisited = new boolean[numberOfCaverns];
 		//For tests
 //		for (int i = 0; i < 4; i++) {
 //			routes.put(i + 1, new Stack<Point>());
@@ -49,24 +49,21 @@ public class Robot {
 		for (Object k : keyset) {
 			if ((Integer) k == cavernNumber)
 				alreadyFound = true;
-	//			System.out.println("AlreadyFound this Cavern before");
-				/*for (Point p : routes.get(k)) {
-					numVisited++;
-					this.col = p.col;
-					this.row = p.row;
-				}*/
 		 }
 		if (!alreadyFound){ 
+			
+			//Find the entrance
 			for (int row = 0; row < numRows; row++) {
 				for (int col = 0; col < numCols; col++) {
-				  if (mine[row][col].isEntrance){
-					 //found is for if this cavern is found or not in the recursive funtion
-					 found = false;
-					 currentPath = new Stack<Point>();
-					 traverse(cavernNumber, row, col);
-					 break;
 					
-				  }
+					//Start traverse at entrance
+					if (mine[row][col].isEntrance){
+						//found is for if this cavern is found or not in the recursive function
+						found = false;
+						currentPath = new Stack<Point>();
+						traverse(cavernNumber, row, col);
+						break;
+					}
 				}
 			}
 		}
@@ -75,35 +72,53 @@ public class Robot {
 	
 	//the recursive function
 	private void traverse(int cavernNumber, int row, int col) {
-		//if the cavern is found found, then do the recursive part
+		//if the cavern is not found, then do the recursive part
 		if (!found){
-
 			//first, we need set the current point to be visited. That means ifVistied is true
 			ifVisited[row][col] = true;
+			
+			//Set robot location for the GUI
+			curRow = row;
+			curCol = col;
+			
 			currentPath.add(mine[row][col]);
 
+			// Check up, down, left, and right
 			for (int r = -1; r < 2; r++){
 				for (int c = -1; c < 2; c++){
+
+					// Don't check diagonals
 					if (Math.abs(r) != Math.abs(c)){
-						if (row + r >= 0 && row + r < numRows){
-							if (col + c >=0 && col + c < numCols){
-								if (!ifVisited[row + r][col + c]){
-									if (mine[row + r][col + c].type.equals(PointType.PATH)){
-										traverse(cavernNumber, row + r, col + c);
-									} else if (mine[row + r][col + c].type.equals(PointType.CAVERN)){
-										if (!carvenVisited[((CavernPoint) mine[row + r][col + c]).getCavernNumber() - 1]){
-											carvenVisited[((CavernPoint) mine[row + r][col + c]).getCavernNumber() - 1] = true;
-											currentPath.add(mine[row + r][col + c]);
-											ArrayList<Point> temp = new ArrayList<Point>();
-											for(Point p : currentPath) {
-												temp.add(p);
-											}
-											routes.put(((CavernPoint) mine[row + r][col + c]).getCavernNumber(), temp);
-											//System.out.println(routes.get((((CavernPoint) mine[row + r][col + c]).getCavernNumber())).size());
-											if (((CavernPoint) mine[row + r][col + c]).getCavernNumber() == cavernNumber) 
-												found = true;
-											currentPath.pop();
+
+						//Check that the space is in the mine
+						if (row + r >= 0 && row + r < numRows && col + c >=0 && col + c < numCols){
+
+							//Check that we haven't already been to this space
+							if (!ifVisited[row + r][col + c]){
+
+								//Check that it is a Path
+								if (mine[row + r][col + c].type.equals(PointType.PATH)){
+									//If it is a path, traverse it
+									traverse(cavernNumber, row + r, col + c);
+									
+								//Or check that it is a cavern
+								} else if (mine[row + r][col + c].type.equals(PointType.CAVERN)){
+									//Check that we haven't already been to the cavern
+									if (!cavernVisited[((CavernPoint) mine[row + r][col + c]).getCavernNumber() - 1]){
+										cavernVisited[((CavernPoint) mine[row + r][col + c]).getCavernNumber() - 1] = true;
+										currentPath.add(mine[row + r][col + c]);
+										
+										//Build path to cavern into an ArrayList and add to routes
+										ArrayList<Point> temp = new ArrayList<Point>();
+										for(Point p : currentPath) {
+											temp.add(p);
 										}
+										routes.put(((CavernPoint) mine[row + r][col + c]).getCavernNumber(), temp);
+
+										//If we found the cavern we were sent to set found to true
+										if (((CavernPoint) mine[row + r][col + c]).getCavernNumber() == cavernNumber) 
+											found = true;
+										currentPath.pop();
 									}
 								}
 							}
