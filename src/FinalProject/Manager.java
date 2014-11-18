@@ -1,15 +1,16 @@
 package FinalProject;
 
+import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
-import java.util.Stack;
 
-public class Manager {
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class Manager extends JFrame {
 
 	private Point[][] mine;
 	private int currentRobot;
@@ -25,8 +26,12 @@ public class Manager {
 	private String inputFile;
 	private LinkedList<Robot> queue;
 	
+	public JPanel minePanel;
+	
 	public Manager(String inputFile) {
 		this.inputFile = inputFile;
+		minePanel = new JPanel();
+		//add(minePanel);
 		try {
 			readInputFile();
 		} catch (Exception e) {
@@ -118,9 +123,19 @@ public class Manager {
 		return queue;
 	}
 	
-	/*public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+//	public void draw(Graphics g) {
+//		for (int row = 0; row < numRows; row++)
+//			for (int col = 0; col < numCols; col++)
+//				minePanel.add(getPointAt(row, col));
+//	}
+	
+	
+	public static void main(String[] args) {
+		Manager m = new Manager("mine.csv");
+		m.setSize(500, 500);
+		m.setVisible(true);
+		m.add(m.minePanel);
 	}
-*/
+	
+	
 }

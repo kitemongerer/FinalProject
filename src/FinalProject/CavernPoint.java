@@ -1,5 +1,9 @@
 package FinalProject;
 
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
+
 public class CavernPoint extends Point {
 	private int cavernNumber;
 
@@ -11,4 +15,6 @@ public class CavernPoint extends Point {
 	public int getCavernNumber() {
 		return cavernNumber;
 	}
+	
+
 }
