@@ -15,7 +15,6 @@ public class Mine extends JPanel {
         this.mine = mine;
         this.numRows = numRows;
         this.numCols = numCols;
-        setSize(500, 500);
         
     }
     
