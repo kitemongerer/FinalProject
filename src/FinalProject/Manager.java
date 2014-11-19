@@ -1,5 +1,6 @@
 package FinalProject;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -125,12 +126,6 @@ public class Manager extends JFrame {
 	public LinkedList<Robot> getQueue() {
 		return queue;
 	}
-	
-//	public void draw(Graphics g) {
-//		for (int row = 0; row < numRows; row++)
-//			for (int col = 0; col < numCols; col++)
-//				minePanel.add(getPointAt(row, col));
-//	}
 	
 	
 	public static void main(String[] args) {

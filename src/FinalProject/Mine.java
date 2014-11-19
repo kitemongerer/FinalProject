@@ -1,5 +1,6 @@
 package FinalProject;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.lang.reflect.Array;
 
@@ -14,12 +15,17 @@ public class Mine extends JPanel {
         this.mine = mine;
         this.numRows = numRows;
         this.numCols = numCols;
+        setSize(500, 500);
+        
     }
     
     @Override
     public void paintComponent(Graphics g) {
+        g.setColor(Color.decode("#D2492A"));
+        g.drawRect(0, 0, 20 * numRows, 20 * numCols);
         for (int row = 0; row < numRows; row++)
             for (int col = 0; col < numCols; col++)
-                g.drawRect(row, col, row + 20, col + 20);
+                if (mine[row][col].type == PointType.WALL)
+                    g.fillRect(col * 20, row * 20, 20, 20);
     }
 }
