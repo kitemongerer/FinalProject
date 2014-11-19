@@ -23,6 +23,7 @@ public class Manager extends JFrame {
 		"Space Invader",
 		"Darth Vapour"
 	};
+	public static final int FRAME_SIZE = 500;
 	private int numRows;
 	private int numCols;
 	private String inputFile;
@@ -40,7 +41,7 @@ public class Manager extends JFrame {
 		}
 		setManager();
 		setVisible(true);
-		setSize(500, 500);
+		setSize(FRAME_SIZE, FRAME_SIZE);
 		m = new Mine(mine, numRows, numCols);
 		add(m);
 	}
