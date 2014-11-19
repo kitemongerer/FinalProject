@@ -26,11 +26,10 @@ public class Manager extends JFrame {
 	private String inputFile;
 	private LinkedList<Robot> queue;
 	
-	public JPanel minePanel;
+	private Mine m;
 	
 	public Manager(String inputFile) {
 		this.inputFile = inputFile;
-		minePanel = new JPanel();
 		//add(minePanel);
 		try {
 			readInputFile();
@@ -38,6 +37,10 @@ public class Manager extends JFrame {
 			System.out.println(e.getMessage());
 		}
 		setManager();
+		setVisible(true);
+		setSize(500, 500);
+		m = new Mine(mine, numRows, numCols);
+		add(m);
 	}
 	
 	//Everytime we run the test, we need this class to initialize the data.
@@ -132,9 +135,6 @@ public class Manager extends JFrame {
 	
 	public static void main(String[] args) {
 		Manager m = new Manager("mine.csv");
-		m.setSize(500, 500);
-		m.setVisible(true);
-		m.add(m.minePanel);
 	}
 	
 	
