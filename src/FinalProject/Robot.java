@@ -39,12 +39,16 @@ public class Robot {
 	
 	private int queuePosition;
 	
-	public Robot(String name, Point[][] mine, int numRows, int numCols) {
+	private Mine m;
+	
+	public Robot(String name, Point[][] mine, Mine m, int numRows, int numCols) {
 		this.name = name;
 		routes = new HashMap<Integer, ArrayList<Point>>();
 		this.mine = mine;
 		this.numRows = numRows;
 		this.numCols = numCols; 
+		this.m = m;
+		inQueue = true;
 		
 		ifVisited = new boolean[numRows][numCols];
 		cavernVisited = new boolean[numberOfCaverns];
@@ -61,7 +65,7 @@ public class Robot {
 	}
 	
 	public void findCavern(int cavernNumber) {
-		boolean inQueue = false;
+		inQueue = false;
 		boolean alreadyFound = false;
 		for (Object k : routes.keySet()) {
 			if ((Integer) k == cavernNumber) { 
@@ -102,7 +106,14 @@ public class Robot {
 			curRow = row;
 			curCol = col;
 			//TODO add GUI functionality to update GUI each time the robot moves
+			m.repaint();
 			//TODO add pause so user can see robot's movement
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			currentPath.add(mine[row][col]);
 
@@ -172,8 +183,13 @@ public class Robot {
 	}
 	
 	private void drawInQueue(Graphics g) {
-		// TODO write this
-		
+		g.setColor(Color.ORANGE);
+		Graphics2D g2d = (Graphics2D) g;
+		// Assume x, y, and diameter are instance variables.
+		Ellipse2D.Double circle = new Ellipse2D.Double(Manager.QUEUE_HORIZONTAL + queuePosition * 2 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL, Manager.POINT_SIZE, Manager.POINT_SIZE);
+		g2d.fill(circle);
+		g.setColor(Color.BLACK);
+		g.drawOval(Manager.QUEUE_HORIZONTAL + queuePosition * 2 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL, Manager.POINT_SIZE, Manager.POINT_SIZE);
 	}
 
 	public ArrayList<Point> getRoute(int cavernNumber) {

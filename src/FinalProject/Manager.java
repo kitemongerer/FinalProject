@@ -18,17 +18,19 @@ public class Manager extends JFrame {
 	private int currentRobot;
 	public static final int NUM_ROBOTS = 4;
 	public static final int POINT_SIZE = 26;
+	public static final int QUEUE_HORIZONTAL = 50;
+	public static final int QUEUE_VERTICAL = 550;
 	public static final String[] names = {
 		"Zlad",
 		"Keytarist Girl",
 		"Space Invader",
 		"Darth Vapour"
 	};
-	public static final int FRAME_SIZE = 500;
+	public static final int FRAME_SIZE = 650;
 	private int numRows;
 	private int numCols;
 	private String inputFile;
-	private ArrayList<Robot> queue;
+	private ArrayList<Robot> queue = new ArrayList<Robot>();;
 	
 	private Mine m;
 	
@@ -40,19 +42,20 @@ public class Manager extends JFrame {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		setManager();
+		
 		setVisible(true);
 		setSize(FRAME_SIZE, FRAME_SIZE);
-		m = new Mine(mine, numRows, numCols);
+		m = new Mine(mine, queue, numRows, numCols);
 		add(m);
+		setManager();
 	}
 	
 	//Everytime we run the test, we need this class to initialize the data.
 	public void setManager(){
-		queue = new ArrayList<Robot>();
+		//queue = new ArrayList<Robot>();
 		currentRobot = 0;
 		for (int i = 0; i < NUM_ROBOTS; i++) {
-			queue.add(new Robot(names[i], mine, numRows, numCols));
+			queue.add(new Robot(names[i], mine, m, numRows, numCols));
 			queue.get(i).setQueuePosition(i);
 		}
 	}
@@ -139,6 +142,10 @@ public class Manager extends JFrame {
 	
 	public static void main(String[] args) {
 		Manager m = new Manager("mine.csv");
+		
+		//TODO remove
+		m.sendRobot(1);
+		m.sendRobot(2);
 	}
 	
 	

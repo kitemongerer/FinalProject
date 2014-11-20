@@ -3,6 +3,7 @@ package FinalProject;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -10,30 +11,35 @@ public class Mine extends JPanel {
     private Point[][] mine;
     private int numRows;
     private int numCols;
-    public static final int CELL_SIZE = 20;
+    private ArrayList<Robot> queue;
     
-    public Mine(Point[][] mine, int numRows, int numCols) {
+    public Mine(Point[][] mine, ArrayList<Robot> queue, int numRows, int numCols) {
         this.mine = mine;
         this.numRows = numRows;
         this.numCols = numCols;
-        
+        this.queue = queue;
     }
     
     @Override
     public void paintComponent(Graphics g) {
+    	super.paintComponent(g);
         g.setColor(Color.decode("#D2492A"));
-        g.drawRect(0, 0, CELL_SIZE * numRows, CELL_SIZE * numCols);
-        for (int row = 0; row < numRows; row++)
-            for (int col = 0; col < numCols; col++) {
-            	g.drawRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                if (mine[row][col].type == PointType.WALL)
-                    g.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-            }
-                
+        g.drawRect(0, 0, Manager.POINT_SIZE * numRows, Manager.POINT_SIZE * numCols);
+        for (int row = 0; row < numRows; row++) {
+        	for (int col = 0; col < numCols; col++) {
+        		g.drawRect(col * Manager.POINT_SIZE, row * Manager.POINT_SIZE, Manager.POINT_SIZE, Manager.POINT_SIZE);
+        		if (mine[row][col].type == PointType.WALL)
+        			g.fillRect(col * Manager.POINT_SIZE, row * Manager.POINT_SIZE, Manager.POINT_SIZE, Manager.POINT_SIZE);
+        	}
+        } 
         g.setColor(Color.cyan);
-        for(int row = 0; row < numRows; row++)
-        	for(int col = 0; col < numCols; col++)
+        for (int row = 0; row < numRows; row++)
+        	for (int col = 0; col < numCols; col++)
         		if (mine[row][col].type == PointType.CAVERN)
-        			g.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        			g.fillRect(col * Manager.POINT_SIZE, row * Manager.POINT_SIZE, Manager.POINT_SIZE, Manager.POINT_SIZE);
+        
+        for (Robot robot : queue) {
+        	robot.draw(g);
+        }
     }
 }
