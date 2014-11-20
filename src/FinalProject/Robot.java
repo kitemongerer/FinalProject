@@ -15,6 +15,7 @@ public class Robot {
 	private HashMap<Integer, ArrayList<Point>> routes;
 	private Stack<Point> currentPath;
 	private String name;
+	private String color;
 	private Point[][] mine;
 	private boolean[][] ifVisited;
 	private boolean[] cavernVisited;
@@ -41,8 +42,9 @@ public class Robot {
 	
 	private Mine m;
 	
-	public Robot(String name, Point[][] mine, Mine m, int numRows, int numCols) {
+	public Robot(String name, String color, Point[][] mine, Mine m, int numRows, int numCols) {
 		this.name = name;
+		this.color = color;
 		routes = new HashMap<Integer, ArrayList<Point>>();
 		this.mine = mine;
 		this.numRows = numRows;
@@ -172,7 +174,7 @@ public class Robot {
 		if (inQueue) {
 			drawInQueue(g);
 		} else {
-			g.setColor(Color.ORANGE);
+			g.setColor(Color.decode(this.color));
 			Graphics2D g2d = (Graphics2D) g;
 			// Assume x, y, and diameter are instance variables.
 			Ellipse2D.Double circle = new Ellipse2D.Double(Manager.POINT_SIZE * curCol, Manager.POINT_SIZE * curRow, Manager.POINT_SIZE, Manager.POINT_SIZE);
@@ -183,7 +185,7 @@ public class Robot {
 	}
 	
 	private void drawInQueue(Graphics g) {
-		g.setColor(Color.ORANGE);
+		g.setColor(Color.decode(this.color));
 		Graphics2D g2d = (Graphics2D) g;
 		// Assume x, y, and diameter are instance variables.
 		Ellipse2D.Double circle = new Ellipse2D.Double(Manager.QUEUE_HORIZONTAL + queuePosition * 2 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL, Manager.POINT_SIZE, Manager.POINT_SIZE);

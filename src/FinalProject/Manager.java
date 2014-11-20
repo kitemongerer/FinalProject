@@ -1,16 +1,13 @@
 package FinalProject;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class Manager extends JFrame {
 
@@ -20,12 +17,13 @@ public class Manager extends JFrame {
 	public static final int POINT_SIZE = 26;
 	public static final int QUEUE_HORIZONTAL = 50;
 	public static final int QUEUE_VERTICAL = 550;
-	public static final String[] names = {
-		"Zlad",
-		"Keytarist Girl",
-		"Space Invader",
-		"Darth Vapour"
-	};
+	public static Map<String, String> ROBOTS;
+	
+//		"Zlad",
+//		"Keytarist Girl",
+//		"Space Invader",
+//		"Darth Vapour"
+
 	public static final int FRAME_SIZE = 650;
 	private int numRows;
 	private int numCols;
@@ -45,6 +43,7 @@ public class Manager extends JFrame {
 		
 		setVisible(true);
 		setSize(FRAME_SIZE, FRAME_SIZE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		m = new Mine(mine, queue, numRows, numCols);
 		add(m);
 		setManager();
@@ -52,11 +51,19 @@ public class Manager extends JFrame {
 	
 	//Everytime we run the test, we need this class to initialize the data.
 	public void setManager(){
+		ROBOTS = new HashMap<String, String>();
+		ROBOTS.put("Zlad", "#7D26CD");
+		ROBOTS.put("Keytarist Girl", "#FF00FF");
+		ROBOTS.put("Space Invader", "#66CD00");
+		ROBOTS.put("Darth Vapour", "#555555");
+		
 		//queue = new ArrayList<Robot>();
 		currentRobot = 0;
-		for (int i = 0; i < NUM_ROBOTS; i++) {
-			queue.add(new Robot(names[i], mine, m, numRows, numCols));
+		int i = 0;
+		for (String name : ROBOTS.keySet()) {
+			queue.add(new Robot(name, ROBOTS.get(name), mine, m, numRows, numCols));
 			queue.get(i).setQueuePosition(i);
+			i++;
 		}
 	}
 	
@@ -142,6 +149,7 @@ public class Manager extends JFrame {
 	
 	public static void main(String[] args) {
 		Manager m = new Manager("mine.csv");
+
 		
 		//TODO remove
 		m.sendRobot(1);
