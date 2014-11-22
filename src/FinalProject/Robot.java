@@ -155,6 +155,7 @@ public class Robot {
 										if (((CavernPoint) mine[row + r][col + c]).getCavernNumber() == cavernNumber) 
 											found = true;
 										currentPath.pop();
+										
 									}
 								}
 							}
@@ -167,6 +168,19 @@ public class Robot {
 			//cavern is not found. 
 			ifVisited[row][col] = false;
 			currentPath.pop();
+			
+			if (!currentPath.empty()) {
+				curRow = currentPath.peek().row;
+				curCol = currentPath.peek().col;
+				m.repaint();
+				//TODO add pause so user can see robot's movement
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		} 
 	}
 	
