@@ -85,6 +85,7 @@ public class Robot {
 			traverse(cavernNumber, entranceRow, entranceCol);
 		}
 		inQueue = true;
+		m.repaint();
 	}
 	
 	private void navigateKnownPath(ArrayList<Point> route) {
@@ -107,9 +108,9 @@ public class Robot {
 			//Set robot location for the GUI
 			curRow = row;
 			curCol = col;
-			//TODO add GUI functionality to update GUI each time the robot moves
 			m.repaint();
-			//TODO add pause so user can see robot's movement
+			
+			//Pause
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -144,6 +145,18 @@ public class Robot {
 										cavernVisited[((CavernPoint) mine[row + r][col + c]).getCavernNumber() - 1] = true;
 										currentPath.add(mine[row + r][col + c]);
 										
+										//Draw robot
+										curRow = row + r;
+										curCol = col + c;
+										m.repaint();
+
+										//Pause
+										try {
+											Thread.sleep(100);
+										} catch (InterruptedException e) {
+											e.printStackTrace();
+										}
+										
 										//Build path to cavern into an ArrayList and add to routes
 										ArrayList<Point> temp = new ArrayList<Point>();
 										for(Point p : currentPath) {
@@ -169,15 +182,16 @@ public class Robot {
 			ifVisited[row][col] = false;
 			currentPath.pop();
 			
+			//Retrace steps
 			if (!currentPath.empty()) {
 				curRow = currentPath.peek().row;
 				curCol = currentPath.peek().col;
 				m.repaint();
-				//TODO add pause so user can see robot's movement
+			
+				//pause
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -202,10 +216,17 @@ public class Robot {
 		g.setColor(Color.decode(this.color));
 		Graphics2D g2d = (Graphics2D) g;
 		// Assume x, y, and diameter are instance variables.
-		Ellipse2D.Double circle = new Ellipse2D.Double(Manager.QUEUE_HORIZONTAL + queuePosition * 2 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL, Manager.POINT_SIZE, Manager.POINT_SIZE);
+		Ellipse2D.Double circle = new Ellipse2D.Double(Manager.QUEUE_HORIZONTAL + queuePosition * 3 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL, Manager.POINT_SIZE, Manager.POINT_SIZE);
 		g2d.fill(circle);
 		g.setColor(Color.BLACK);
-		g.drawOval(Manager.QUEUE_HORIZONTAL + queuePosition * 2 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL, Manager.POINT_SIZE, Manager.POINT_SIZE);
+		g.drawOval(Manager.QUEUE_HORIZONTAL + queuePosition * 3 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL, Manager.POINT_SIZE, Manager.POINT_SIZE);
+		drawString(g, name, Manager.QUEUE_HORIZONTAL + queuePosition * 3 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL + Manager.POINT_SIZE);
+	}
+	
+	//For longer names
+	void drawString(Graphics g, String text, int x, int y) {
+	    for (String line : text.split(" "))
+	        g.drawString(line, x, y += g.getFontMetrics().getHeight());
 	}
 
 	public ArrayList<Point> getRoute(int cavernNumber) {
