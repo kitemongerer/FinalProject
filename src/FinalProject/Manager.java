@@ -131,12 +131,10 @@ public class Manager extends JFrame {
 				JOptionPane.showMessageDialog(null, "You must enter a number.");
 			else {
 				cavernNumber = Integer.parseInt(cavernInput);
-				if(cavernNumber <= 0)
-					JOptionPane.showMessageDialog(null, "The cavern number must be greater than 0.");
-				else if(cavernNumber > 4)
-					JOptionPane.showMessageDialog(null, "The cavern number must be less than 4.");
+				if(cavernNumber <= 0 || cavernNumber > 4)
+					JOptionPane.showMessageDialog(null, "The cavern number must be between 1 and 4.");
 				else
-					sendRobot(cavernNumber);
+					sendRobot(cavernNumber);//Problem is with this line.
 			}
 		}
 	}
@@ -216,8 +214,8 @@ public class Manager extends JFrame {
 
 		
 		//TODO remove
-		//m.sendRobot(1);
-		//m.sendRobot(2);
+		m.sendRobot(1);
+		m.sendRobot(2);
 	}
 	
 	
