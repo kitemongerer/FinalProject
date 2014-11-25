@@ -68,6 +68,9 @@ public class Manager extends JFrame {
 	}
 	
 	public void sendRobot(int cavernNumber) {
+		if (queue.get((currentRobot + 1) % NUM_ROBOTS).getRoutes().containsKey(cavernNumber)) {
+			queue.get(currentRobot).getRoutes().put(cavernNumber, queue.get((currentRobot + 1) % NUM_ROBOTS).getRoute(cavernNumber));
+		}
 		queue.get(currentRobot).findCavern(cavernNumber);
 		
 		//Set the next robot is the current robot
@@ -154,6 +157,9 @@ public class Manager extends JFrame {
 		//TODO remove
 		m.sendRobot(1);
 		m.sendRobot(2);
+		m.sendRobot(1);
+		m.sendRobot(1);
+		m.sendRobot(1);
 	}
 	
 	
