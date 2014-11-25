@@ -1,5 +1,9 @@
 package FinalProject;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -7,7 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
 
 public class Manager extends JFrame {
 
@@ -18,13 +28,14 @@ public class Manager extends JFrame {
 	public static final int QUEUE_HORIZONTAL = 50;
 	public static final int QUEUE_VERTICAL = 550;
 	public static Map<String, String> ROBOTS;
+	private JTextField cavernChoice;
 	
 //		"Zlad",
 //		"Keytarist Girl",
 //		"Space Invader",
 //		"Darth Vapour"
 
-	public static final int FRAME_SIZE = 650;
+	public static final int FRAME_SIZE = 700;
 	private int numRows;
 	private int numCols;
 	private String inputFile;
@@ -42,10 +53,11 @@ public class Manager extends JFrame {
 		}
 		
 		setVisible(true);
-		setSize(FRAME_SIZE, FRAME_SIZE);
+		setSize(1000, FRAME_SIZE);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		m = new Mine(mine, queue, numRows, numCols);
 		add(m);
+		add(createNextRobotPanel(), BorderLayout.EAST);
 		setManager();
 	}
 	
@@ -75,6 +87,58 @@ public class Manager extends JFrame {
 	    for (Robot robot : queue) {
 	    	robot.moveUp();
 	    }
+	}
+	
+	public JPanel createNextRobotPanel() {
+		JPanel nextRobotPanel = new JPanel();
+		nextRobotPanel.setLayout(new GridLayout(2,1));
+		nextRobotPanel.add(createNextButton());
+		nextRobotPanel.add(createChooseCavern());
+		return nextRobotPanel;
+	}
+	
+	public JButton createNextButton() {
+		JButton nextRobot = new JButton("Next");
+		nextRobot.addActionListener(new NextRobotListener());
+		return nextRobot;
+	}
+	
+	public JPanel createChooseCavern() {
+		JPanel chooseCavern = new JPanel();
+		JLabel chooseText = new JLabel("Which cavern should the next robot find?");
+		cavernChoice = new JTextField(20);
+		chooseCavern.setLayout(new GridLayout(2,1));
+		chooseCavern.add(chooseText);
+		chooseCavern.add(cavernChoice);
+		chooseCavern.setBorder(new EtchedBorder());
+		return chooseCavern;
+	}
+	
+	public static boolean isInt(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch(NumberFormatException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	private class NextRobotListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			String cavernInput = cavernChoice.getText();
+			int cavernNumber;
+			if(!isInt(cavernInput))
+				JOptionPane.showMessageDialog(null, "You must enter a number.");
+			else {
+				cavernNumber = Integer.parseInt(cavernInput);
+				if(cavernNumber <= 0)
+					JOptionPane.showMessageDialog(null, "The cavern number must be greater than 0.");
+				else if(cavernNumber > 4)
+					JOptionPane.showMessageDialog(null, "The cavern number must be less than 4.");
+				else
+					sendRobot(cavernNumber);
+			}
+		}
 	}
 	
 	private void readInputFile() throws BadConfigFormatException, FileNotFoundException {
@@ -152,8 +216,8 @@ public class Manager extends JFrame {
 
 		
 		//TODO remove
-		m.sendRobot(1);
-		m.sendRobot(2);
+		//m.sendRobot(1);
+		//m.sendRobot(2);
 	}
 	
 	
