@@ -32,11 +32,15 @@ public class Mine extends JPanel {
         			g.fillRect(col * Manager.POINT_SIZE, row * Manager.POINT_SIZE, Manager.POINT_SIZE, Manager.POINT_SIZE);
         	}
         } 
-        g.setColor(Color.cyan);
+        
         for (int row = 0; row < numRows; row++)
         	for (int col = 0; col < numCols; col++)
-        		if (mine[row][col].type == PointType.CAVERN)
+        		if (mine[row][col].type == PointType.CAVERN) {
+        		    g.setColor(Color.cyan);
         			g.fillRect(col * Manager.POINT_SIZE, row * Manager.POINT_SIZE, Manager.POINT_SIZE, Manager.POINT_SIZE);
+        			g.setColor(Color.BLACK);
+        			g.drawString(Integer.toString(((CavernPoint) mine[row][col]).getCavernNumber()), col * Manager.POINT_SIZE + 8, row * Manager.POINT_SIZE + Manager.POINT_SIZE - 8);
+        		}
         
         for (Robot robot : queue) {
         	robot.draw(g);

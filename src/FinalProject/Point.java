@@ -17,10 +17,16 @@ public class Point extends JPanel{
 		this.type = type;
 	}
 
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.setColor(Color.BLACK);
-		g.drawRect(row, col, row + 20, col + 20);
-	}
+//	@Override
+//	public void paintComponent(Graphics g) {
+//		super.paintComponent(g);
+//		g.setColor(Color.BLACK);
+////		g.drawRect(row, col, row + Manager.POINT_SIZE, col + Manager.POINT_SIZE);
+////		g.drawRect(row, col, row + 20, col + 20);
+//		g.drawString("wow", 60, 60);
+//		if (this.type == PointType.CAVERN) {
+////		    g.drawString(Integer.toString(((CavernPoint) this).getCavernNumber()), row, col);
+////		    g.drawString("wow", row, col);
+//		}
+//	}
 }
