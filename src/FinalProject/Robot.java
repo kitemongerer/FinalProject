@@ -92,8 +92,16 @@ public class Robot {
 		for(Point point : route) {
 			curRow = point.row;
 			curCol = point.col;
-			//TODO redraw robot
-			//TODO add pause so user can see changes
+
+			m.repaint();
+
+			//Pause
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}
