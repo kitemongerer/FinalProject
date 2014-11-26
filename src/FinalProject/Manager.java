@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -41,7 +42,9 @@ public class Manager extends JFrame {
 	private int numCols;
 	private String inputFile;
 	private ArrayList<Robot> queue = new ArrayList<Robot>();;
-
+	
+	private JTextArea status;
+	
 	private Mine m;
 
 	public Manager(String inputFile) {
@@ -59,6 +62,10 @@ public class Manager extends JFrame {
 		m = new Mine(mine, queue, numRows, numCols);
 		add(m);
 		setManager();
+		
+	    status = new JTextArea(10,10);
+		status.setEditable(false);
+		
 		add(createNextRobotPanel(), BorderLayout.EAST);
 	}
 
@@ -92,11 +99,7 @@ public class Manager extends JFrame {
 		for (Robot robot : queue) {
 			robot.moveUp();
 		}
-		createRobotStatus();
-		this.repaint();
-		//updateDisplay();
-		//createNextRobotPanel().setVisible(false);
-		//add(createRobotStatus(), BorderLayout.EAST);
+		status.append(Integer.toString(cavernNumber)+ "\n");
 	}
 
 	public JPanel createNextRobotPanel() {
@@ -111,20 +114,13 @@ public class Manager extends JFrame {
 	public JPanel createRobotStatus() {
 		JPanel robotStatus = new JPanel();
 		robotStatus.setBorder(new TitledBorder(new EtchedBorder(),"List of Robots and explored Caverns"));
-		robotStatus.setLayout(new GridLayout(4,4));
-		JLabel[] labels = new JLabel[4];
-		int i = 0;
+		String str = "";
 		for (Robot robot : queue) {
-			String str = "";
-			str = robot.getName() + ":";
-			for (int car = 1; car < 5; car ++)
-				if (robot.getRoutes().containsValue(car))
-					str += car;
-			labels[i] = new JLabel(str);
-			robotStatus.add(labels[i]);		
-			i++;
+		    str += robot.getName();
+			str += "\n";
 		}
-		this.repaint();
+		status.setText(str);
+		robotStatus.add(status);
 		return robotStatus;
 	}
 
