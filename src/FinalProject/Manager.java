@@ -214,14 +214,6 @@ public class Manager extends JFrame {
 	
 	public static void main(String[] args) {
 		Manager m = new Manager("mine.csv");
-
-		
-		//TODO remove
-		m.sendRobot(1);
-		m.sendRobot(2);
-		m.sendRobot(1);
-		m.sendRobot(1);
-		m.sendRobot(1);
 	}
 	
 	

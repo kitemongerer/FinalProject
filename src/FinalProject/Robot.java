@@ -8,18 +8,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class Robot {
 	
 	//For all robots, they cannot share their data of routes for the others. 
 	private HashMap<Integer, ArrayList<Point>> routes;
 	private Stack<Point> currentPath;
+	private ArrayList<Point> explorePath;
 	private String name;
 	private String color;
 	private Point[][] mine;
 	private boolean[][] ifVisited;
 	private boolean[] cavernVisited;
 	private boolean inQueue;
+	
 	//FOR DEV ONLY
 	int numVisited = 0;
 	int numberOfCaverns = 4;
@@ -67,12 +72,17 @@ public class Robot {
 	}
 	
 	public void findCavern(int cavernNumber) {
+		explorePath = new ArrayList<Point>();
 		inQueue = false;
 		boolean alreadyFound = false;
 		for (Object k : routes.keySet()) {
 			if ((Integer) k == cavernNumber) { 
 				alreadyFound = true;
-				navigateKnownPath(routes.get(k));
+				//navigateKnownPath(routes.get(k));
+				explorePath = routes.get(cavernNumber);
+				for (int i = explorePath.size() - 1; i > -1; i--) {
+					explorePath.add(explorePath.get(i));
+				}
 			}
 		}
 
@@ -84,26 +94,22 @@ public class Robot {
 			//Start traverse at entrance
 			traverse(cavernNumber, entranceRow, entranceCol);
 		}
-		inQueue = true;
-		m.repaint();
-	}
-	
-	private void navigateKnownPath(ArrayList<Point> route) {
-		for(Point point : route) {
-			curRow = point.row;
-			curCol = point.col;
-
-			m.repaint();
-
-			//Pause
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			private int current = 0;
+			private int size = explorePath.size();
+			   public void run() {
+				   if (current < size) {
+					   drawPath(current);
+					   current++;
+				   } else {
+					   inQueue = true;
+					   m.repaint();
+					   this.cancel();
+				   }
+			   }
+			}, 0, 100 );
 	}
 
 	//the recursive function
@@ -113,20 +119,8 @@ public class Robot {
 			//first, we need set the current point to be visited. That means ifVistied is true
 			ifVisited[row][col] = true;
 			
-			//Set robot location for the GUI
-			curRow = row;
-			curCol = col;
-			m.repaint();
-			
-			//Pause
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
 			currentPath.add(mine[row][col]);
+			explorePath.add(mine[row][col]);
 
 			// Check up, down, left, and right
 			for (int r = -1; r < 2; r++){
@@ -153,17 +147,7 @@ public class Robot {
 										cavernVisited[((CavernPoint) mine[row + r][col + c]).getCavernNumber() - 1] = true;
 										currentPath.add(mine[row + r][col + c]);
 										
-										//Draw robot
-										curRow = row + r;
-										curCol = col + c;
-										m.repaint();
-
-										//Pause
-										try {
-											Thread.sleep(100);
-										} catch (InterruptedException e) {
-											e.printStackTrace();
-										}
+										explorePath.add(mine[row + r][col + c]);
 										
 										//Build path to cavern into an ArrayList and add to routes
 										ArrayList<Point> temp = new ArrayList<Point>();
@@ -187,23 +171,22 @@ public class Robot {
 
 			//We need set the current point is not visited and pop the last point out of the Currentpath if the
 			//cavern is not found. 
+			
 			ifVisited[row][col] = false;
 			currentPath.pop();
 			
 			//Retrace steps
 			if (!currentPath.empty()) {
-				curRow = currentPath.peek().row;
-				curCol = currentPath.peek().col;
-				m.repaint();
-			
-				//pause
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				explorePath.add(mine[row][col]);
 			}
 		} 
+	}
+	
+	public void drawPath(int current) {
+		Point p = explorePath.get(current);
+		curRow = p.row;
+		curCol = p.col;
+		m.repaint();
 	}
 	
 	public void draw(Graphics g) {
