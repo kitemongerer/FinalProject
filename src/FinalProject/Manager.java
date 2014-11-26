@@ -130,12 +130,20 @@ public class Manager extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			String cavernInput = cavernChoice.getText();
 			int cavernNumber;
-			if(!isInt(cavernInput))
+			if (!isInt(cavernInput))
 				JOptionPane.showMessageDialog(null, "You must enter a number.");
 			else {
+				Boolean readyForNext = true;
+				for (Robot r : queue) {
+					if (!r.inQueue()) {
+						readyForNext = false;
+					}
+				}
 				cavernNumber = Integer.parseInt(cavernInput);
-				if(cavernNumber <= 0 || cavernNumber > 4)
+				if (cavernNumber <= 0 || cavernNumber > 4)
 					JOptionPane.showMessageDialog(null, "The cavern number must be between 1 and 4.");
+				else if (!readyForNext)
+					JOptionPane.showMessageDialog(null, "A robot is still exploring please wait.");
 				else
 					sendRobot(cavernNumber);//Problem is with this line.
 			}

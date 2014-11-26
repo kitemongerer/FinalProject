@@ -248,4 +248,8 @@ public class Robot {
 			queuePosition = Manager.NUM_ROBOTS - 1;
 		}
 	}
+	
+	public boolean inQueue() {
+		return inQueue;
+	}
 }
