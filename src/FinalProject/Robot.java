@@ -12,7 +12,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class Robot {
+import javax.swing.JPanel;
+
+public class Robot extends JPanel{
 	
 	//For all robots, they cannot share their data of routes for the others. 
 	private HashMap<Integer, ArrayList<Point>> routes;
@@ -246,9 +248,6 @@ public class Robot {
 		return name;
 	}
 	
-	public int getCarven(){
-		return curCarvenNumber;
-	}
 	
 	public void setQueuePosition(int queuePosition) {
 		this.queuePosition = queuePosition;

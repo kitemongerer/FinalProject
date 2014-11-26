@@ -30,20 +30,20 @@ public class Manager extends JFrame {
 	public static final int QUEUE_VERTICAL = 550;
 	public static Map<String, String> ROBOTS;
 	private JTextField cavernChoice;
-	
-//		"Zlad",
-//		"Keytarist Girl",
-//		"Space Invader",
-//		"Darth Vapour"
+
+	//		"Zlad",
+	//		"Keytarist Girl",
+	//		"Space Invader",
+	//		"Darth Vapour"
 
 	public static final int FRAME_SIZE = 700;
 	private int numRows;
 	private int numCols;
 	private String inputFile;
 	private ArrayList<Robot> queue = new ArrayList<Robot>();;
-	
+
 	private Mine m;
-	
+
 	public Manager(String inputFile) {
 		this.inputFile = inputFile;
 		//add(minePanel);
@@ -52,7 +52,7 @@ public class Manager extends JFrame {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		setVisible(true);
 		setSize(1000, FRAME_SIZE);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -61,7 +61,7 @@ public class Manager extends JFrame {
 		setManager();
 		add(createNextRobotPanel(), BorderLayout.EAST);
 	}
-	
+
 	//Everytime we run the test, we need this class to initialize the data.
 	public void setManager(){
 		ROBOTS = new HashMap<String, String>();
@@ -69,7 +69,7 @@ public class Manager extends JFrame {
 		ROBOTS.put("Keytarist Girl", "#FF00FF");
 		ROBOTS.put("Space Invader", "#66CD00");
 		ROBOTS.put("Darth Vapour", "#555555");
-		
+
 		//queue = new ArrayList<Robot>();
 		currentRobot = 0;
 		int i = 0;
@@ -78,32 +78,27 @@ public class Manager extends JFrame {
 			queue.get(i).setQueuePosition(i);
 			i++;
 		}
-		
+
 	}
-	
-	
-	
-	
+
 	public void sendRobot(int cavernNumber) {
 		if (queue.get((currentRobot + 1) % NUM_ROBOTS).getRoutes().containsKey(cavernNumber)) {
 			queue.get(currentRobot).getRoutes().put(cavernNumber, queue.get((currentRobot + 1) % NUM_ROBOTS).getRoute(cavernNumber));
 		}
 		queue.get(currentRobot).findCavern(cavernNumber);
-		
+
 		//Set the next robot is the current robot
-	    currentRobot = (currentRobot + 1) % NUM_ROBOTS;
-	    for (Robot robot : queue) {
-	    	robot.moveUp();
-	    }
-	    updateDisplay();
-	    //createNextRobotPanel().setVisible(false);
-	    //add(createRobotStatus(), BorderLayout.EAST);
+		currentRobot = (currentRobot + 1) % NUM_ROBOTS;
+		for (Robot robot : queue) {
+			robot.moveUp();
+		}
+		createRobotStatus();
+		this.repaint();
+		//updateDisplay();
+		//createNextRobotPanel().setVisible(false);
+		//add(createRobotStatus(), BorderLayout.EAST);
 	}
-	
-	public void updateDisplay(){
-		createNextRobotPanel().repaint();
-	}
-	
+
 	public JPanel createNextRobotPanel() {
 		JPanel nextRobotPanel = new JPanel();
 		nextRobotPanel.setLayout(new GridLayout(3,1));
@@ -112,26 +107,33 @@ public class Manager extends JFrame {
 		nextRobotPanel.add(createRobotStatus());
 		return nextRobotPanel;
 	}
-	
+
 	public JPanel createRobotStatus() {
 		JPanel robotStatus = new JPanel();
-		robotStatus.setBorder(new TitledBorder(new EtchedBorder(),"Robot Current Cavern"));
-		robotStatus.setLayout(new GridLayout(4,2));
+		robotStatus.setBorder(new TitledBorder(new EtchedBorder(),"List of Robots and explored Caverns"));
+		robotStatus.setLayout(new GridLayout(4,4));
 		JLabel[] labels = new JLabel[4];
 		int i = 0;
 		for (Robot robot : queue) {
-			labels[i] = new JLabel(robot.getName() + ":  " + robot.getCarven());
+			String str = "";
+			str = robot.getName() + ":";
+			for (int car = 1; car < 5; car ++)
+				if (robot.getRoutes().containsValue(car))
+					str += car;
+			labels[i] = new JLabel(str);
 			robotStatus.add(labels[i]);		
+			i++;
 		}
+		this.repaint();
 		return robotStatus;
 	}
-	
+
 	public JButton createNextButton() {
 		JButton nextRobot = new JButton("Next");
 		nextRobot.addActionListener(new NextRobotListener());
 		return nextRobot;
 	}
-	
+
 	public JPanel createChooseCavern() {
 		JPanel chooseCavern = new JPanel();
 		JLabel chooseText = new JLabel("Which cavern should the next robot find?");
@@ -142,7 +144,7 @@ public class Manager extends JFrame {
 		chooseCavern.setBorder(new EtchedBorder());
 		return chooseCavern;
 	}
-	
+
 	public static boolean isInt(String s) {
 		try {
 			Integer.parseInt(s);
@@ -151,7 +153,7 @@ public class Manager extends JFrame {
 		}
 		return true;
 	}
-	
+
 	private class NextRobotListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			String cavernInput = cavernChoice.getText();
@@ -175,7 +177,7 @@ public class Manager extends JFrame {
 			}
 		}
 	}
-	
+
 	private void readInputFile() throws BadConfigFormatException, FileNotFoundException {
 		ArrayList<ArrayList<String>> tempMine = new ArrayList<ArrayList<String>>();
 		Scanner mineRead = new Scanner(new FileReader(inputFile));
@@ -234,21 +236,21 @@ public class Manager extends JFrame {
 	public int getCurrentRobot() {	
 		return currentRobot;
 	}
-	
+
 	//FOR DEV ONLY
 	public Point getPointAt(int row, int col) {
 		return mine[row][col];
 	}
-	
+
 	//FOR DEV ONLY
 	public ArrayList<Robot> getQueue() {
 		return queue;
 	}
-	
-	
+
+
 	public static void main(String[] args) {
 		Manager m = new Manager("mine.csv");
 	}
-	
-	
+
+
 }
