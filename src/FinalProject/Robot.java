@@ -43,6 +43,8 @@ public class Robot {
 	private int entranceCol;
 	private int entranceRow;
 	
+	private int curCarvenNumber;
+	
 	private int queuePosition;
 	
 	private Mine m;
@@ -56,6 +58,7 @@ public class Robot {
 		this.numCols = numCols; 
 		this.m = m;
 		inQueue = true;
+		curCarvenNumber = 0;
 		
 		ifVisited = new boolean[numRows][numCols];
 		cavernVisited = new boolean[numberOfCaverns];
@@ -72,6 +75,7 @@ public class Robot {
 	}
 	
 	public void findCavern(int cavernNumber) {
+		curCarvenNumber = cavernNumber;
 		explorePath = new ArrayList<Point>();
 		inQueue = false;
 		boolean alreadyFound = false;
@@ -237,7 +241,15 @@ public class Robot {
 	public int getRow() {
 	   return curRow;
 	}
-
+	
+	public String getName(){
+		return name;
+	}
+	
+	public int getCarven(){
+		return curCarvenNumber;
+	}
+	
 	public void setQueuePosition(int queuePosition) {
 		this.queuePosition = queuePosition;
 	}

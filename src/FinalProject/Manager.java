@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 public class Manager extends JFrame {
 
@@ -57,8 +58,8 @@ public class Manager extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		m = new Mine(mine, queue, numRows, numCols);
 		add(m);
-		add(createNextRobotPanel(), BorderLayout.EAST);
 		setManager();
+		add(createNextRobotPanel(), BorderLayout.EAST);
 	}
 	
 	//Everytime we run the test, we need this class to initialize the data.
@@ -77,7 +78,11 @@ public class Manager extends JFrame {
 			queue.get(i).setQueuePosition(i);
 			i++;
 		}
+		
 	}
+	
+	
+	
 	
 	public void sendRobot(int cavernNumber) {
 		if (queue.get((currentRobot + 1) % NUM_ROBOTS).getRoutes().containsKey(cavernNumber)) {
@@ -90,14 +95,35 @@ public class Manager extends JFrame {
 	    for (Robot robot : queue) {
 	    	robot.moveUp();
 	    }
+	    updateDisplay();
+	    //createNextRobotPanel().setVisible(false);
+	    //add(createRobotStatus(), BorderLayout.EAST);
+	}
+	
+	public void updateDisplay(){
+		createNextRobotPanel().repaint();
 	}
 	
 	public JPanel createNextRobotPanel() {
 		JPanel nextRobotPanel = new JPanel();
-		nextRobotPanel.setLayout(new GridLayout(2,1));
+		nextRobotPanel.setLayout(new GridLayout(3,1));
 		nextRobotPanel.add(createNextButton());
 		nextRobotPanel.add(createChooseCavern());
+		nextRobotPanel.add(createRobotStatus());
 		return nextRobotPanel;
+	}
+	
+	public JPanel createRobotStatus() {
+		JPanel robotStatus = new JPanel();
+		robotStatus.setBorder(new TitledBorder(new EtchedBorder(),"Robot Current Cavern"));
+		robotStatus.setLayout(new GridLayout(4,2));
+		JLabel[] labels = new JLabel[4];
+		int i = 0;
+		for (Robot robot : queue) {
+			labels[i] = new JLabel(robot.getName() + ":  " + robot.getCarven());
+			robotStatus.add(labels[i]);		
+		}
+		return robotStatus;
 	}
 	
 	public JButton createNextButton() {
