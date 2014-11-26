@@ -43,9 +43,8 @@ public class Manager extends JFrame {
 	private String inputFile;
 	private ArrayList<Robot> queue = new ArrayList<Robot>();;
 	
-	private JTextArea status;
-	
 	private Mine m;
+	private JLabel[] labels;
 
 	public Manager(String inputFile) {
 		this.inputFile = inputFile;
@@ -62,10 +61,7 @@ public class Manager extends JFrame {
 		m = new Mine(mine, queue, numRows, numCols);
 		add(m);
 		setManager();
-		
-	    status = new JTextArea(10,10);
-		status.setEditable(false);
-		
+
 		add(createNextRobotPanel(), BorderLayout.EAST);
 	}
 
@@ -99,7 +95,14 @@ public class Manager extends JFrame {
 		for (Robot robot : queue) {
 			robot.moveUp();
 		}
-		status.append(Integer.toString(cavernNumber)+ "\n");
+		for (int i = 0; i < NUM_ROBOTS; i++) {
+			String text = queue.get(i).getName() + ": ";
+			for (int key :queue.get(i).getRoutes().keySet()) {
+				text += key + ", ";
+			}
+			text = text.substring(0, text.length() - 2);
+			labels[i].setText(text);
+		}
 	}
 
 	public JPanel createNextRobotPanel() {
@@ -113,14 +116,18 @@ public class Manager extends JFrame {
 
 	public JPanel createRobotStatus() {
 		JPanel robotStatus = new JPanel();
+		robotStatus.setLayout(new GridLayout(4,4));
 		robotStatus.setBorder(new TitledBorder(new EtchedBorder(),"List of Robots and explored Caverns"));
-		String str = "";
+		labels = new JLabel[NUM_ROBOTS];
+		int i = 0;
 		for (Robot robot : queue) {
-		    str += robot.getName();
-			str += "\n";
+			labels[i] = new JLabel(robot.getName() + ":  ");
+			String str = "";
+			str = robot.getName() + ":";
+			labels[i] = new JLabel(str);
+			robotStatus.add(labels[i]);		
+			i++;
 		}
-		status.setText(str);
-		robotStatus.add(status);
 		return robotStatus;
 	}
 
