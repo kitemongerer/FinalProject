@@ -26,6 +26,7 @@ public class Manager extends JFrame {
 	private Point[][] mine;
 	private int currentRobot;
 	public static final int NUM_ROBOTS = 4;
+	public static int NUM_CAVERNS = 0;
 	public static final int POINT_SIZE = 26;
 	public static final int QUEUE_HORIZONTAL = 50;
 	public static final int QUEUE_VERTICAL = 550;
@@ -171,8 +172,8 @@ public class Manager extends JFrame {
 					}
 				}
 				cavernNumber = Integer.parseInt(cavernInput);
-				if (cavernNumber <= 0 || cavernNumber > 4)
-					JOptionPane.showMessageDialog(null, "The cavern number must be between 1 and 4.");
+				if (cavernNumber <= 0 || cavernNumber > NUM_CAVERNS)
+					JOptionPane.showMessageDialog(null, "The cavern number must be between 1 and " + NUM_CAVERNS + ".");
 				else if (!readyForNext)
 					JOptionPane.showMessageDialog(null, "A robot is still exploring please wait.");
 				else
@@ -228,6 +229,7 @@ public class Manager extends JFrame {
 					getPointAt(i, j).isEntrance = true;
 					break;
 				default:
+					NUM_CAVERNS++;
 					mine[i][j] = new CavernPoint(i, j, PointType.CAVERN ,tempMine.get(i).get(j));
 					break;
 				}
@@ -252,7 +254,7 @@ public class Manager extends JFrame {
 
 
 	public static void main(String[] args) {
-		Manager m = new Manager("mine.csv");
+		Manager m = new Manager("mine2.csv");
 	}
 
 

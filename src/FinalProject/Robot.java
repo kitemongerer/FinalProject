@@ -25,11 +25,6 @@ public class Robot extends JPanel{
 	private Point[][] mine;
 	private boolean[][] ifVisited;
 	private boolean[] cavernVisited;
-	private boolean inQueue;
-	
-	//FOR DEV ONLY
-	int numVisited = 0;
-	int numberOfCaverns = 4;
 	
 	private boolean found;
 	
@@ -45,10 +40,11 @@ public class Robot extends JPanel{
 	private int entranceCol;
 	private int entranceRow;
 	
-	private int curCarvenNumber;
-	
+	// Position in Queue
 	private int queuePosition;
+	private boolean inQueue;
 	
+	// Mine for repainting
 	private Mine m;
 	
 	public Robot(String name, String color, Point[][] mine, Mine m, int numRows, int numCols) {
@@ -60,10 +56,9 @@ public class Robot extends JPanel{
 		this.numCols = numCols; 
 		this.m = m;
 		inQueue = true;
-		curCarvenNumber = 0;
 		
 		ifVisited = new boolean[numRows][numCols];
-		cavernVisited = new boolean[numberOfCaverns];
+		cavernVisited = new boolean[Manager.NUM_CAVERNS];
 		
 		for (int row = 0; row < numRows; row++) {
 			for (int col = 0; col < numCols; col++) {
@@ -77,7 +72,6 @@ public class Robot extends JPanel{
 	}
 	
 	public void findCavern(int cavernNumber) {
-		curCarvenNumber = cavernNumber;
 		explorePath = new ArrayList<Point>();
 		inQueue = false;
 		boolean alreadyFound = false;
