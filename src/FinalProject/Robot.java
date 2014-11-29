@@ -84,8 +84,13 @@ public class Robot extends JPanel{
 		for (Object k : routes.keySet()) {
 			if ((Integer) k == cavernNumber) { 
 				alreadyFound = true;
-				//navigateKnownPath(routes.get(k));
-				explorePath = routes.get(cavernNumber);
+				
+				//Build path to the cavern and back
+				ArrayList<Point> path = routes.get(cavernNumber);
+				for (int i = 0; i < path.size(); i++) {
+					explorePath.add(path.get(i));
+				}
+				//Make sure the robot can travel back to the start
 				for (int i = explorePath.size() - 1; i > -1; i--) {
 					explorePath.add(explorePath.get(i));
 				}
