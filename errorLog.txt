@@ -1,0 +1,1 @@
+Error in the formatting of config file: Row lengths are inconsistant in layout config file.
