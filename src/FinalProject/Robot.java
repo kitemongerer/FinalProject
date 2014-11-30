@@ -4,15 +4,16 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
+
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 public class Robot extends JPanel{
 	
@@ -116,7 +117,7 @@ public class Robot extends JPanel{
 			   }
 			}, 0, 100 );
 	}
-
+	
 	//the recursive function
 	private void traverse(int cavernNumber, int row, int col) {
 		//if the cavern is not found, then do the recursive part
@@ -126,13 +127,44 @@ public class Robot extends JPanel{
 			
 			currentPath.add(mine[row][col]);
 			explorePath.add(mine[row][col]);
+			
+			// NEW order checking
+			// 0 top
+			// 1 right
+			// 2 bottom
+			// 3 left
+			ArrayList<Integer> order = new ArrayList<Integer>();
+			order.add(0);
+			order.add(1);
+			order.add(2);
+			order.add(3);
+			java.util.Collections.shuffle(order);
+			
+			int r = 0;
+			int c = 0;
+			
+			for (int i = 0; i < order.size(); i++) {
 
-			// Check up, down, left, and right
-			for (int r = -1; r < 2; r++){
-				for (int c = -1; c < 2; c++){
-
-					// Don't check diagonals
-					if (Math.abs(r) != Math.abs(c)){
+				switch (order.get(i)) {
+				case 0:
+					r = -1;
+					c = 0;
+					break;
+				case 1:
+					r = 0;
+					c = 1;
+					break;
+				case 2:
+					r = 1;
+					c = 0;
+					break;
+				case 3:
+					r = 0;
+					c = -1;
+					break;
+					default:
+						break;
+				}
 
 						//Check that the space is in the mine
 						if (row + r >= 0 && row + r < numRows && col + c >=0 && col + c < numCols){
@@ -170,9 +202,7 @@ public class Robot extends JPanel{
 								}
 							}
 						}
-					}
 				}
-			}
 
 			//We need set the current point is not visited and pop the last point out of the Currentpath if the
 			//cavern is not found. 
