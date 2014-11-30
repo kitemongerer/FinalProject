@@ -56,7 +56,7 @@ public class Manager extends JFrame {
 			System.out.println(e.getMessage());
 		}
 
-		setVisible(true);
+		
 		setSize(1000, FRAME_SIZE);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		m = new Mine(mine, queue, numRows, numCols);
@@ -64,6 +64,7 @@ public class Manager extends JFrame {
 		setManager();
 
 		add(createNextRobotPanel(), BorderLayout.EAST);
+		setVisible(true);
 	}
 
 	//Everytime we run the test, we need this class to initialize the data.
