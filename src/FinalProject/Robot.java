@@ -245,14 +245,16 @@ public class Robot extends JPanel{
 	}
 	
 	private void drawInQueue(Graphics g) {
+		g.drawString("Robots Available to Traverse", Manager.QUEUE_HORIZONTAL, Manager.QUEUE_VERTICAL + Manager.POINT_SIZE);
+		g.drawString("(Next Robot is Farthest Left)", Manager.QUEUE_HORIZONTAL, Manager.QUEUE_VERTICAL + Manager.POINT_SIZE + 15);
 		g.setColor(Color.decode(this.color));
 		Graphics2D g2d = (Graphics2D) g;
 		// Assume x, y, and diameter are instance variables.
-		Ellipse2D.Double circle = new Ellipse2D.Double(Manager.QUEUE_HORIZONTAL + queuePosition * 3 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL, Manager.POINT_SIZE, Manager.POINT_SIZE);
+		Ellipse2D.Double circle = new Ellipse2D.Double(Manager.QUEUE_LEFT + Manager.QUEUE_HORIZONTAL + queuePosition * 3 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL, Manager.POINT_SIZE, Manager.POINT_SIZE);
 		g2d.fill(circle);
 		g.setColor(Color.BLACK);
-		g.drawOval(Manager.QUEUE_HORIZONTAL + queuePosition * 3 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL, Manager.POINT_SIZE, Manager.POINT_SIZE);
-		drawString(g, name, Manager.QUEUE_HORIZONTAL + queuePosition * 3 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL + Manager.POINT_SIZE);
+		g.drawOval(Manager.QUEUE_LEFT + Manager.QUEUE_HORIZONTAL + queuePosition * 3 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL, Manager.POINT_SIZE, Manager.POINT_SIZE);
+		drawString(g, name, Manager.QUEUE_LEFT + Manager.QUEUE_HORIZONTAL + queuePosition * 3 * Manager.POINT_SIZE, Manager.QUEUE_VERTICAL + Manager.POINT_SIZE);
 	}
 	
 	//For longer names
