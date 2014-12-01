@@ -11,7 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,7 +33,7 @@ public class Manager extends JFrame {
 	public static final int QUEUE_HORIZONTAL = 50;
 	public static final int QUEUE_VERTICAL = 550;
 	public static Map<String, String> ROBOTS;
-	private JTextField cavernChoice;
+	private JComboBox<Integer> cavernChoice;
 	private JTextField speedSettingField;
 
 	//		"Zlad",
@@ -44,7 +46,7 @@ public class Manager extends JFrame {
 	private int numCols;
 	private String inputFile;
 	private ArrayList<Robot> queue = new ArrayList<Robot>();;
-
+	private TitledBorder robotTitle = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Robots Available to Traverse");
 	private Mine m;
 	private JLabel[] labels;
 
@@ -63,6 +65,8 @@ public class Manager extends JFrame {
 		m = new Mine(mine, queue, numRows, numCols);
 		add(m);
 		setManager();
+		robotTitle.setTitlePosition(TitledBorder.BELOW_BOTTOM);
+		m.setBorder(robotTitle);
 
 		add(createNextRobotPanel(), BorderLayout.EAST);
 		setVisible(true);
@@ -185,7 +189,9 @@ public class Manager extends JFrame {
 	public JPanel createChooseCavern() {
 		JPanel chooseCavern = new JPanel();
 		JLabel chooseText = new JLabel("Which cavern should the next robot find?");
-		cavernChoice = new JTextField(20);
+		cavernChoice = new JComboBox<Integer>();
+		for(int i = 1; i <= NUM_CAVERNS; i++)
+			cavernChoice.addItem(i);
 		chooseCavern.setLayout(new GridLayout(2,1));
 		chooseCavern.add(chooseText);
 		chooseCavern.add(cavernChoice);
@@ -204,25 +210,23 @@ public class Manager extends JFrame {
 
 	private class NextRobotListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			String cavernInput = cavernChoice.getText();
+			//String cavernInput = cavernChoice.getText();
 			int cavernNumber;
-			if (!isInt(cavernInput))
-				JOptionPane.showMessageDialog(null, "You must enter a number.");
-			else {
-				Boolean readyForNext = true;
-				for (Robot r : queue) {
-					if (!r.inQueue()) {
-						readyForNext = false;
-					}
+			//if (!isInt(cavernInput))
+			//JOptionPane.showMessageDialog(null, "You must enter a number.");
+			Boolean readyForNext = true;
+			for (Robot r : queue) {
+				if (!r.inQueue()) {
+					readyForNext = false;
 				}
-				cavernNumber = Integer.parseInt(cavernInput);
-				if (cavernNumber <= 0 || cavernNumber > NUM_CAVERNS)
-					JOptionPane.showMessageDialog(null, "The cavern number must be between 1 and " + NUM_CAVERNS + ".");
-				else if (!readyForNext)
-					JOptionPane.showMessageDialog(null, "A robot is still exploring please wait.");
-				else
-					sendRobot(cavernNumber);//Problem is with this line.
 			}
+			cavernNumber = cavernChoice.getSelectedIndex() + 1;
+			//if (cavernNumber <= 0 || cavernNumber > NUM_CAVERNS)
+				//JOptionPane.showMessageDialog(null, "The cavern number must be between 1 and " + NUM_CAVERNS + ".");
+			if (!readyForNext)
+				JOptionPane.showMessageDialog(null, "A robot is still exploring please wait.");
+			else
+				sendRobot(cavernNumber);//Problem is with this line.
 		}
 	}
 

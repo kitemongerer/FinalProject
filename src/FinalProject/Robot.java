@@ -12,6 +12,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
@@ -239,6 +241,7 @@ public class Robot extends JPanel{
 			g.setColor(Color.BLACK);
 			g.drawOval(Manager.POINT_SIZE * curCol, Manager.POINT_SIZE * curRow, Manager.POINT_SIZE, Manager.POINT_SIZE);
 		}
+		
 	}
 	
 	private void drawInQueue(Graphics g) {
