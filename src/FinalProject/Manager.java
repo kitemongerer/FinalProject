@@ -120,10 +120,10 @@ public class Manager extends JFrame {
 
 	private class IncreaseSpeedListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (queue.get(currentRobot).getSpeed() - 25 <= 0){
+			if (queue.get(currentRobot).getSpeed() - 10 <= 0){
 				JOptionPane.showMessageDialog(null, "The speed of this robot is too fast!");
 			}else{
-				queue.get(currentRobot).setSpeed(queue.get(currentRobot).getSpeed() - 25);
+				queue.get(currentRobot).setSpeed(queue.get(currentRobot).getSpeed() - 10);
 				speedSettingField.setText(((Integer) (500 - queue.get(currentRobot).getSpeed())).toString());
 			}
 		}
@@ -131,10 +131,10 @@ public class Manager extends JFrame {
 
 	private class DecreaseSpeedListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (queue.get(currentRobot).getSpeed() +25 >= 500){
-				JOptionPane.showMessageDialog(null, "The speed of this robot is too fast!");
+			if (queue.get(currentRobot).getSpeed() + 10 >= 500){
+				JOptionPane.showMessageDialog(null, "The speed of this robot is too slow!");
 			}else{
-				queue.get(currentRobot).setSpeed(queue.get(currentRobot).getSpeed() + 25);
+				queue.get(currentRobot).setSpeed(queue.get(currentRobot).getSpeed() + 10);
 				speedSettingField.setText(((Integer)(500 - queue.get(currentRobot).getSpeed())).toString());
 			}
 		}
@@ -142,7 +142,7 @@ public class Manager extends JFrame {
 
 	public JPanel timerSetting(){
 		JPanel settingSpeed = new JPanel();
-		settingSpeed.setLayout(new GridLayout(3,1));
+		settingSpeed.setLayout(new GridLayout(2,1));
 		JButton inSpeed = new JButton("Increase Speed");
 		JButton deSpeed = new JButton("Decrease Speed");
 		inSpeed.addActionListener(new IncreaseSpeedListener());
@@ -152,7 +152,7 @@ public class Manager extends JFrame {
 		speedSettingField = new JTextField(20);
 		speedSettingField.setText(((Integer)queue.get(currentRobot).getSpeed()).toString());
 		speedSettingField.setEditable(false);
-		settingSpeed.add(speedSettingField);
+		//settingSpeed.add(speedSettingField);
 		settingSpeed.add(inSpeed);
 		settingSpeed.add(deSpeed);
 		return settingSpeed;	
