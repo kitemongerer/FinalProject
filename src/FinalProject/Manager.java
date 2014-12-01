@@ -32,6 +32,7 @@ public class Manager extends JFrame {
 	public static final int POINT_SIZE = 26;
 	public static final int QUEUE_HORIZONTAL = 50;
 	public static final int QUEUE_VERTICAL = 550;
+	public static final int QUEUE_LEFT = 200;
 	public static Map<String, String> ROBOTS;
 	private JComboBox<Integer> cavernChoice;
 	private JTextField speedSettingField;
@@ -42,7 +43,6 @@ public class Manager extends JFrame {
 	private int numCols;
 	private String inputFile;
 	private ArrayList<Robot> queue = new ArrayList<Robot>();;
-	private TitledBorder robotTitle = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Robots Available to Traverse (Next Robot is Farthest Left)");
 	private Mine m;
 	private JLabel[] labels;
 
@@ -61,8 +61,6 @@ public class Manager extends JFrame {
 		m = new Mine(mine, queue, numRows, numCols);
 		add(m);
 		setManager();
-		robotTitle.setTitlePosition(TitledBorder.BELOW_BOTTOM);
-		m.setBorder(robotTitle);
 
 		add(createNextRobotPanel(), BorderLayout.EAST);
 		setVisible(true);
