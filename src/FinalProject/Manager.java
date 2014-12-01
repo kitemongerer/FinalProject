@@ -118,22 +118,30 @@ public class Manager extends JFrame {
 
 	private class IncreaseSpeedListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (queue.get(currentRobot).getSpeed() - 10 <= 0){
+			int speed = queue.get(currentRobot).getSpeed();
+			if (speed - 10 <= 0){
 				JOptionPane.showMessageDialog(null, "The speed of this robot is too fast!");
 			} else {
-				queue.get(currentRobot).setSpeed(queue.get(currentRobot).getSpeed() - 10);
-				speedSettingField.setText(((Integer) (500 - queue.get(currentRobot).getSpeed())).toString());
+				speed -= 10;
+				for (Robot r : queue) {
+					r.setSpeed(speed);
+				}
+				speedSettingField.setText(((Integer) (500 - speed)).toString());
 			}
 		}
 	}
 
 	private class DecreaseSpeedListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (queue.get(currentRobot).getSpeed() + 10 >= 500){
+			int speed = queue.get(currentRobot).getSpeed();
+			if (speed + 10 >= 500){
 				JOptionPane.showMessageDialog(null, "The speed of this robot is too slow!");
 			} else {
-				queue.get(currentRobot).setSpeed(queue.get(currentRobot).getSpeed() + 10);
-				speedSettingField.setText(((Integer)(500 - queue.get(currentRobot).getSpeed())).toString());
+				speed += 10;
+				for (Robot r : queue) {
+					r.setSpeed(speed);
+				}
+				speedSettingField.setText(((Integer)(500 - speed)).toString());
 			}
 		}
 	}
