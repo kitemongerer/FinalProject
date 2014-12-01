@@ -41,7 +41,7 @@ public class Manager extends JFrame {
 	private int numCols;
 	private String inputFile;
 	private ArrayList<Robot> queue = new ArrayList<Robot>();;
-	private TitledBorder robotTitle = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Robots Available to Traverse");
+	private TitledBorder robotTitle = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Robots Available to Traverse (Next Robot is Farthest Left)");
 	private Mine m;
 	private JLabel[] labels;
 
