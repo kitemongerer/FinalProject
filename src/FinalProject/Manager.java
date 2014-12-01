@@ -32,6 +32,7 @@ public class Manager extends JFrame {
 	public static final int QUEUE_VERTICAL = 550;
 	public static Map<String, String> ROBOTS;
 	private JTextField cavernChoice;
+	private JTextField speedSettingField;
 
 	//		"Zlad",
 	//		"Keytarist Girl",
@@ -43,7 +44,7 @@ public class Manager extends JFrame {
 	private int numCols;
 	private String inputFile;
 	private ArrayList<Robot> queue = new ArrayList<Robot>();;
-	
+
 	private Mine m;
 	private JLabel[] labels;
 
@@ -56,7 +57,7 @@ public class Manager extends JFrame {
 			System.out.println(e.getMessage());
 		}
 
-		
+
 		setSize(1000, FRAME_SIZE);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		m = new Mine(mine, queue, numRows, numCols);
@@ -109,11 +110,53 @@ public class Manager extends JFrame {
 
 	public JPanel createNextRobotPanel() {
 		JPanel nextRobotPanel = new JPanel();
-		nextRobotPanel.setLayout(new GridLayout(3,1));
+		nextRobotPanel.setLayout(new GridLayout(4,1));
 		nextRobotPanel.add(createNextButton());
 		nextRobotPanel.add(createChooseCavern());
 		nextRobotPanel.add(createRobotStatus());
+		nextRobotPanel.add(timerSetting());
 		return nextRobotPanel;
+	}
+
+	private class IncreaseSpeedListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (queue.get(currentRobot).getSpeed() - 25 <= 0){
+				JOptionPane.showMessageDialog(null, "The speed of this robot is too fast!");
+			}else{
+				queue.get(currentRobot).setSpeed(queue.get(currentRobot).getSpeed() - 25);
+				speedSettingField.setText(((Integer) (500 - queue.get(currentRobot).getSpeed())).toString());
+			}
+		}
+	}
+
+	private class DecreaseSpeedListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (queue.get(currentRobot).getSpeed() +25 >= 500){
+				JOptionPane.showMessageDialog(null, "The speed of this robot is too fast!");
+			}else{
+				queue.get(currentRobot).setSpeed(queue.get(currentRobot).getSpeed() + 25);
+				speedSettingField.setText(((Integer)(500 - queue.get(currentRobot).getSpeed())).toString());
+			}
+		}
+	}
+
+	public JPanel timerSetting(){
+		JPanel settingSpeed = new JPanel();
+		settingSpeed.setLayout(new GridLayout(3,1));
+		JButton inSpeed = new JButton("Increase Speed");
+		JButton deSpeed = new JButton("Decrease Speed");
+		inSpeed.addActionListener(new IncreaseSpeedListener());
+		deSpeed.addActionListener(new DecreaseSpeedListener());
+		settingSpeed.setBorder(new TitledBorder(new EtchedBorder(), "Set the Speed of Robots"));
+
+		speedSettingField = new JTextField(20);
+		speedSettingField.setText(((Integer)queue.get(currentRobot).getSpeed()).toString());
+		speedSettingField.setEditable(false);
+		settingSpeed.add(speedSettingField);
+		settingSpeed.add(inSpeed);
+		settingSpeed.add(deSpeed);
+		return settingSpeed;	
+
 	}
 
 	public JPanel createRobotStatus() {

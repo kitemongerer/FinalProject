@@ -45,6 +45,8 @@ public class Robot extends JPanel{
 	private int queuePosition;
 	private boolean inQueue;
 	
+	private int speed;
+	
 	// Mine for repainting
 	private Mine m;
 	
@@ -57,6 +59,7 @@ public class Robot extends JPanel{
 		this.numCols = numCols; 
 		this.m = m;
 		inQueue = true;
+		this.speed = 200;
 		
 		ifVisited = new boolean[numRows][numCols];
 		cavernVisited = new boolean[Manager.NUM_CAVERNS];
@@ -115,7 +118,7 @@ public class Robot extends JPanel{
 					   this.cancel();
 				   }
 			   }
-			}, 0, 100 );
+			}, 0, speed );
 	}
 	
 	//the recursive function
@@ -277,7 +280,14 @@ public class Robot extends JPanel{
 		return name;
 	}
 	
-	
+	public int getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+
 	public void setQueuePosition(int queuePosition) {
 		this.queuePosition = queuePosition;
 	}
