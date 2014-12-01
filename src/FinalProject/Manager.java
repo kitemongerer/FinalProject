@@ -36,7 +36,8 @@ public class Manager extends JFrame {
 	private JComboBox<Integer> cavernChoice;
 	private JTextField speedSettingField;
 
-	public static final int FRAME_SIZE = 700;
+	public static final int FRAME_HEIGHT = 700;
+	public static final int FRAME_WIDTH = 800;
 	private int numRows;
 	private int numCols;
 	private String inputFile;
@@ -47,7 +48,7 @@ public class Manager extends JFrame {
 
 	public Manager(String inputFile) {
 		this.inputFile = inputFile;
-		//add(minePanel);
+		
 		try {
 			readInputFile();
 		} catch (Exception e) {
@@ -55,7 +56,7 @@ public class Manager extends JFrame {
 		}
 
 
-		setSize(1000, FRAME_SIZE);
+		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		m = new Mine(mine, queue, numRows, numCols);
 		add(m);
@@ -68,7 +69,7 @@ public class Manager extends JFrame {
 	}
 
 	//Everytime we run the test, we need this class to initialize the data.
-	public void setManager(){
+	public void setManager() {
 		ROBOTS = new HashMap<String, String>();
 		ROBOTS.put("Zlad", "#7D26CD");
 		ROBOTS.put("Keytarist Girl", "#FF00FF");
@@ -109,7 +110,7 @@ public class Manager extends JFrame {
 
 	public JPanel createNextRobotPanel() {
 		JPanel nextRobotPanel = new JPanel();
-		nextRobotPanel.setLayout(new GridLayout(4,1));
+		nextRobotPanel.setLayout(new GridLayout(4, 1));
 		nextRobotPanel.add(createNextButton());
 		nextRobotPanel.add(createChooseCavern());
 		nextRobotPanel.add(createRobotStatus());
@@ -121,7 +122,7 @@ public class Manager extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (queue.get(currentRobot).getSpeed() - 10 <= 0){
 				JOptionPane.showMessageDialog(null, "The speed of this robot is too fast!");
-			}else{
+			} else {
 				queue.get(currentRobot).setSpeed(queue.get(currentRobot).getSpeed() - 10);
 				speedSettingField.setText(((Integer) (500 - queue.get(currentRobot).getSpeed())).toString());
 			}
@@ -132,16 +133,16 @@ public class Manager extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (queue.get(currentRobot).getSpeed() + 10 >= 500){
 				JOptionPane.showMessageDialog(null, "The speed of this robot is too slow!");
-			}else{
+			} else {
 				queue.get(currentRobot).setSpeed(queue.get(currentRobot).getSpeed() + 10);
 				speedSettingField.setText(((Integer)(500 - queue.get(currentRobot).getSpeed())).toString());
 			}
 		}
 	}
 
-	public JPanel timerSetting(){
+	public JPanel timerSetting() {
 		JPanel settingSpeed = new JPanel();
-		settingSpeed.setLayout(new GridLayout(3,1));
+		settingSpeed.setLayout(new GridLayout(3, 1));
 		JButton inSpeed = new JButton("Increase Speed");
 		JButton deSpeed = new JButton("Decrease Speed");
 		inSpeed.addActionListener(new IncreaseSpeedListener());
@@ -161,8 +162,8 @@ public class Manager extends JFrame {
 
 	public JPanel createRobotStatus() {
 		JPanel robotStatus = new JPanel();
-		robotStatus.setLayout(new GridLayout(4,4));
-		robotStatus.setBorder(new TitledBorder(new EtchedBorder(),"List of Robots and explored Caverns"));
+		robotStatus.setLayout(new GridLayout(4, 4));
+		robotStatus.setBorder(new TitledBorder(new EtchedBorder(), "List of Robots and explored Caverns"));
 		labels = new JLabel[NUM_ROBOTS];
 		int i = 0;
 		for (Robot robot : queue) {
@@ -186,9 +187,9 @@ public class Manager extends JFrame {
 		JPanel chooseCavern = new JPanel();
 		JLabel chooseText = new JLabel("Which cavern should the next robot find?");
 		cavernChoice = new JComboBox<Integer>();
-		for(int i = 1; i <= NUM_CAVERNS; i++)
+		for (int i = 1; i <= NUM_CAVERNS; i++)
 			cavernChoice.addItem(i);
-		chooseCavern.setLayout(new GridLayout(2,1));
+		chooseCavern.setLayout(new GridLayout(2, 1));
 		chooseCavern.add(chooseText);
 		chooseCavern.add(cavernChoice);
 		chooseCavern.setBorder(new EtchedBorder());
@@ -198,7 +199,7 @@ public class Manager extends JFrame {
 	public static boolean isInt(String s) {
 		try {
 			Integer.parseInt(s);
-		} catch(NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			return false;
 		}
 		return true;
@@ -219,10 +220,11 @@ public class Manager extends JFrame {
 			cavernNumber = cavernChoice.getSelectedIndex() + 1;
 			//if (cavernNumber <= 0 || cavernNumber > NUM_CAVERNS)
 				//JOptionPane.showMessageDialog(null, "The cavern number must be between 1 and " + NUM_CAVERNS + ".");
-			if (!readyForNext)
+			if (!readyForNext) {
 				JOptionPane.showMessageDialog(null, "A robot is still exploring please wait.");
-			else
-				sendRobot(cavernNumber);//Problem is with this line.
+			} else {
+				sendRobot(cavernNumber);
+			}
 		}
 	}
 
@@ -255,12 +257,12 @@ public class Manager extends JFrame {
 
 		for (int i = 0; i < numRows; i++) {
 			for (int j = 0; j < numCols; j++) {
-				if (i > tempMine.size())
+				if (i > tempMine.size()) {
 					throw new BadConfigFormatException("Temp board row count doesn't match config file");
-
-				if (j > tempMine.get(0).size())
+				}
+				if (j > tempMine.get(0).size()) {
 					throw new BadConfigFormatException("Temp board column count doesn't match config file");
-
+				}
 				switch (tempMine.get(i).get(j)) {
 				case "W":
 					mine[i][j] = new Point(i, j, PointType.WALL);
@@ -274,7 +276,7 @@ public class Manager extends JFrame {
 					break;
 				default:
 					NUM_CAVERNS++;
-					mine[i][j] = new CavernPoint(i, j, PointType.CAVERN ,tempMine.get(i).get(j));
+					mine[i][j] = new CavernPoint(i, j, PointType.CAVERN, tempMine.get(i).get(j));
 					break;
 				}
 			}
@@ -300,6 +302,4 @@ public class Manager extends JFrame {
 	public static void main(String[] args) {
 		Manager m = new Manager("mine2.csv");
 	}
-
-
 }
