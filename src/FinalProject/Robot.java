@@ -59,7 +59,7 @@ public class Robot extends JPanel{
 		this.numCols = numCols; 
 		this.m = m;
 		inQueue = true;
-		this.speed = 200;
+		this.speed = 100;
 		
 		ifVisited = new boolean[numRows][numCols];
 		cavernVisited = new boolean[Manager.NUM_CAVERNS];

@@ -34,11 +34,6 @@ public class Manager extends JFrame {
 	private JTextField cavernChoice;
 	private JTextField speedSettingField;
 
-	//		"Zlad",
-	//		"Keytarist Girl",
-	//		"Space Invader",
-	//		"Darth Vapour"
-
 	public static final int FRAME_SIZE = 700;
 	private int numRows;
 	private int numCols;
@@ -142,7 +137,7 @@ public class Manager extends JFrame {
 
 	public JPanel timerSetting(){
 		JPanel settingSpeed = new JPanel();
-		settingSpeed.setLayout(new GridLayout(2,1));
+		settingSpeed.setLayout(new GridLayout(3,1));
 		JButton inSpeed = new JButton("Increase Speed");
 		JButton deSpeed = new JButton("Decrease Speed");
 		inSpeed.addActionListener(new IncreaseSpeedListener());
@@ -150,9 +145,10 @@ public class Manager extends JFrame {
 		settingSpeed.setBorder(new TitledBorder(new EtchedBorder(), "Set the Speed of Robots"));
 
 		speedSettingField = new JTextField(20);
-		speedSettingField.setText(((Integer)queue.get(currentRobot).getSpeed()).toString());
+		speedSettingField.setText(((Integer)(500 - queue.get(currentRobot).getSpeed())).toString());
 		speedSettingField.setEditable(false);
-		//settingSpeed.add(speedSettingField);
+		speedSettingField.setHorizontalAlignment(JTextField.CENTER);
+		settingSpeed.add(speedSettingField);
 		settingSpeed.add(inSpeed);
 		settingSpeed.add(deSpeed);
 		return settingSpeed;	
